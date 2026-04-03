@@ -77,9 +77,9 @@
         .status-dot {
             width: 6px;
             height: 6px;
-            background: var(--accent-gold);
+            background: var(--cor-navy);
             border-radius: 50%;
-            box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 6px rgba(30, 58, 95, 0.8);
         }
         
         .collapse-btn {
@@ -121,9 +121,9 @@
         
         .stat-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--cor-navy);
+            font-size: 18px;
+            font-weight: 700;
+            color: #58a6ff;
         }
         
         .stat-label {
@@ -220,21 +220,29 @@
             color: var(--bg-dark);
         }
         
-        .show-all-btn {
-            width: 100%;
+        .bulk-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .bulk-btn {
+            flex: 1;
             padding: 8px;
-            margin-top: 6px;
-            background: transparent;
-            border: 1px dashed var(--border);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 6px;
             color: var(--text-secondary);
             font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .show-all-btn:hover {
+        .bulk-btn:hover {
             border-color: var(--cor-navy);
-            color: var(--cor-navy);
+            color: var(--text-primary);
+            background: rgba(30, 58, 95, 0.3);
         }
         
         /* Markers */
@@ -414,7 +422,10 @@
             <div class="filter-section">
                 <div class="filter-section-title">Organizations</div>
                 <div id="filter-list"></div>
-                <button class="show-all-btn" onclick="showAll()">Show All</button>
+                <div class="bulk-btns">
+                    <button class="bulk-btn" onclick="showAll()">Select All</button>
+                    <button class="bulk-btn" onclick="hideAll()">Deselect All</button>
+                </div>
             </div>
         </div>
     </div>
@@ -666,6 +677,14 @@
             Object.keys(companies).forEach(company => {
                 activeFilters.add(company);
                 if (!map.hasLayer(markerLayers[company])) markerLayers[company].addTo(map);
+            });
+            buildFilterList();
+        }
+
+        function hideAll() {
+            Object.keys(companies).forEach(company => {
+                activeFilters.delete(company);
+                if (map.hasLayer(markerLayers[company])) map.removeLayer(markerLayers[company]);
             });
             buildFilterList();
         }
