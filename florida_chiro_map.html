@@ -3,136 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Florida Chiropractic Centers Map</title>
+    <title>Florida Medical Centers | Intelligence View</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        #map { height: 100vh; width: 100%; }
-        .legend {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            max-height: 80vh;
-            overflow-y: auto;
+        
+        :root {
+            --bg-dark: #0a0e14;
+            --bg-panel: #141a22;
+            --bg-card: #1a222d;
+            --border: #2a3441;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-teal: #00d4aa;
+            --accent-blue: #58a6ff;
+            --accent-orange: #f0883e;
+            --glow-teal: rgba(0, 212, 170, 0.3);
         }
-        .legend h3 {
-            margin-bottom: 10px;
-            color: #1a365d;
-            border-bottom: 2px solid #00A19B;
-            padding-bottom: 5px;
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
         }
-        .legend-item {
+        
+        #map { 
+            height: 100vh; 
+            width: 100%; 
+            background: var(--bg-dark);
+        }
+        
+        /* Dark map tiles */
+        .leaflet-tile-pane { filter: saturate(0.3) brightness(0.7) contrast(1.1); }
+        .leaflet-control-zoom { display: none; }
+        
+        /* Main Panel */
+        .panel {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: 320px;
+            max-height: calc(100vh - 32px);
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .panel.collapsed {
+            width: auto;
+            max-height: auto;
+        }
+        
+        .panel.collapsed .panel-body {
+            display: none;
+        }
+        
+        .panel-header {
+            padding: 16px 20px;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            margin: 8px 0;
-            font-size: 13px;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
         }
-        .legend-color {
-            width: 20px;
-            height: 20px;
+        
+        .panel-header:hover {
+            background: linear-gradient(180deg, #1e2832 0%, var(--bg-panel) 100%);
+        }
+        
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title h2 {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-teal);
             border-radius: 50%;
-            margin-right: 10px;
-            border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            box-shadow: 0 0 8px var(--glow-teal);
+            animation: pulse 2s infinite;
         }
-        .legend-item.cor {
-            font-weight: bold;
-            background: #e6f7f7;
-            padding: 5px;
-            border-radius: 4px;
-            margin: 10px 0;
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        .legend-item.cor .legend-color {
-            background: #00A19B;
-            border: 3px solid gold;
-        }
-        .cor-marker {
-            background: #00A19B;
-            border: 3px solid gold;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
+        
+        .collapse-btn {
+            width: 28px;
+            height: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.2s;
         }
+        
+        .collapse-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+        
+        .panel.collapsed .collapse-btn {
+            transform: rotate(180deg);
+        }
+        
+        .panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        
+        .panel-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .panel-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .panel-body::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-teal);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        
+        /* Filter List */
+        .filter-section {
+            margin-bottom: 8px;
+        }
+        
+        .filter-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 8px 8px 6px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            margin: 2px 0;
+            background: var(--bg-card);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-item:hover {
+            background: #1e2832;
+            border-color: var(--border);
+        }
+        
+        .filter-item.active {
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 12px rgba(0, 212, 170, 0.15);
+        }
+        
+        .filter-item.inactive {
+            opacity: 0.4;
+        }
+        
+        .filter-item.cor {
+            background: linear-gradient(90deg, rgba(0, 212, 170, 0.15) 0%, var(--bg-card) 100%);
+            border-color: var(--accent-teal);
+        }
+        
+        .filter-item.cor.inactive {
+            opacity: 0.5;
+            border-color: transparent;
+            background: var(--bg-card);
+        }
+        
+        .filter-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .filter-item.cor .filter-color {
+            border: 2px solid gold;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+        
+        .filter-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .filter-item.cor .filter-name {
+            color: var(--accent-teal);
+        }
+        
+        .filter-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .filter-item.active .filter-count {
+            background: var(--accent-teal);
+            color: var(--bg-dark);
+        }
+        
+        /* Show All Button */
+        .show-all-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .show-all-btn:hover {
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+        
+        /* Info Footer */
+        .panel-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        
+        /* Custom Markers */
+        .cor-marker {
+            background: var(--accent-teal);
+            border: 3px solid gold;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 16px var(--glow-teal), 0 2px 8px rgba(0,0,0,0.5);
+        }
+        
         .cor-marker::after {
             content: "★";
             color: white;
             font-size: 14px;
+            text-shadow: 0 0 4px rgba(0,0,0,0.5);
         }
-        .info-header {
-            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px 8px 0 0;
-            margin: -10px -10px 10px -10px;
+        
+        /* Popups */
+        .leaflet-popup-content-wrapper {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        .info-header.cor {
-            background: linear-gradient(135deg, #00A19B 0%, #00c4b4 100%);
-            border: 2px solid gold;
+        
+        .leaflet-popup-content {
+            margin: 0;
+            color: var(--text-primary);
         }
+        
+        .leaflet-popup-tip {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+        }
+        
         .popup-content {
             min-width: 200px;
         }
+        
+        .popup-header {
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: 8px 8px 0 0;
+            margin: -1px -1px 0 -1px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .popup-header.cor {
+            background: linear-gradient(90deg, rgba(0, 212, 170, 0.2) 0%, var(--bg-card) 100%);
+            border-left: 3px solid var(--accent-teal);
+        }
+        
+        .popup-company {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .popup-header.cor .popup-company {
+            color: var(--accent-teal);
+        }
+        
+        .popup-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .popup-body {
+            padding: 12px 16px;
+        }
+        
         .popup-address {
-            color: #666;
             font-size: 12px;
-            margin-top: 5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Zoom Controls */
+        .zoom-controls {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 1000;
+        }
+        
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .zoom-btn:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-teal);
+        }
+        
+        /* Mobile */
+        @media (max-width: 640px) {
+            .panel {
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-height: 50vh;
+                border-radius: 16px 16px 0 0;
+            }
+            
+            .panel.collapsed {
+                max-height: auto;
+            }
+            
+            .zoom-controls {
+                bottom: auto;
+                top: 16px;
+                right: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div id="map"></div>
     
+    <div class="panel" id="panel">
+        <div class="panel-header" onclick="togglePanel()">
+            <div class="panel-title">
+                <div class="status-dot"></div>
+                <h2>Entity Tracking</h2>
+            </div>
+            <div class="collapse-btn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M9 4.5L6 7.5L3 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value" id="total-locations">0</div>
+                    <div class="stat-label">Locations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="total-entities">0</div>
+                    <div class="stat-label">Entities</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="visible-count">0</div>
+                    <div class="stat-label">Visible</div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-section-title">Organizations</div>
+                <div id="filter-list"></div>
+                <button class="show-all-btn" onclick="showAll()">Show All Organizations</button>
+            </div>
+        </div>
+        <div class="panel-footer">
+            Florida Medical Centers Intelligence • COR Medical Group
+        </div>
+    </div>
+    
+    <div class="zoom-controls">
+        <button class="zoom-btn" onclick="map.zoomIn()">+</button>
+        <button class="zoom-btn" onclick="map.zoomOut()">−</button>
+    </div>
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script>
-        // Initialize map centered on Florida
-        const map = L.map('map').setView([27.6648, -81.5158], 7);
+        // Initialize map
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView([27.6648, -81.5158], 7);
         
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+        // Dark tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© CARTO © OpenStreetMap',
+            maxZoom: 19
         }).addTo(map);
 
-        // Company colors
-        const colors = {
-            'COR Medical Centers': '#00A19B',
-            'Complete Care': '#e74c3c',
-            'Action Physical Therapy': '#9b59b6',
-            'Path Medical': '#3498db',
-            'Physicians Group': '#e67e22',
-            'RejuvenX': '#1abc9c',
-            'ChiroCare of Florida': '#f39c12',
-            'Back to Mind': '#8e44ad',
-            'Total MD': '#c0392b',
-            'County Line Chiropractic': '#16a085',
-            'Fusion Chiropractic Spa': '#d35400',
-            'Goldson Spine': '#2980b9'
+        // Company data
+        const companies = {
+            'COR Medical Centers': { color: '#00d4aa', isUs: true },
+            'Complete Care': { color: '#ef4444' },
+            'Action Physical Therapy': { color: '#a855f7' },
+            'Path Medical': { color: '#3b82f6' },
+            'Physicians Group': { color: '#f97316' },
+            'RejuvenX': { color: '#14b8a6' },
+            'ChiroCare of Florida': { color: '#eab308' },
+            'Back to Mind': { color: '#8b5cf6' },
+            'Total MD': { color: '#dc2626' },
+            'County Line Chiropractic': { color: '#10b981' },
+            'Fusion Chiropractic Spa': { color: '#ea580c' },
+            'Goldson Spine': { color: '#2563eb' }
         };
 
-        // Location data (geocoded)
+        // Location data
         const locations = [
-            // COR Medical Centers (★ marker)
-            {company: 'COR Medical Centers', name: 'Orlando', address: '1320 N Semoran Blvd, Orlando, FL', lat: 28.5584, lng: -81.3057, isUs: true},
-            {company: 'COR Medical Centers', name: 'North Miami', address: '12550 Biscayne Blvd Ste 907, North Miami, FL', lat: 25.8903, lng: -80.1625, isUs: true},
-            {company: 'COR Medical Centers', name: 'Miami (Kendall)', address: '13501 SW 128th St, Miami, FL', lat: 25.6437, lng: -80.4089, isUs: true},
-            {company: 'COR Medical Centers', name: 'Doral', address: '4001 NW 97th Ave, Doral, FL', lat: 25.8195, lng: -80.3570, isUs: true},
-            {company: 'COR Medical Centers', name: 'Coral Way', address: '1333 Coral Way Ste 200, Miami, FL', lat: 25.7510, lng: -80.2148, isUs: true},
-            {company: 'COR Medical Centers', name: 'Hollywood', address: '3107 Stirling Rd, Hollywood, FL', lat: 26.0217, lng: -80.1831, isUs: true},
-            {company: 'COR Medical Centers', name: 'Homestead', address: '15600 SW 288th St Ste 403, Homestead, FL', lat: 25.4687, lng: -80.4557, isUs: true},
-            {company: 'COR Medical Centers', name: 'Hialeah', address: '1275 W 47th Pl Ste 301, Hialeah, FL', lat: 25.8706, lng: -80.3104, isUs: true},
-            {company: 'COR Medical Centers', name: 'Miami Gardens', address: '111 NW 183rd St #200, Miami, FL', lat: 25.9387, lng: -80.2045, isUs: true},
-            {company: 'COR Medical Centers', name: 'Jacksonville', address: 'Jacksonville, FL', lat: 30.3322, lng: -81.6557, isUs: true},
-            {company: 'COR Medical Centers', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572, isUs: true},
-            {company: 'COR Medical Centers', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948, isUs: true},
-            {company: 'COR Medical Centers', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723, isUs: true},
+            // COR Medical Centers
+            {company: 'COR Medical Centers', name: 'Orlando', address: '1320 N Semoran Blvd, Orlando, FL', lat: 28.5584, lng: -81.3057},
+            {company: 'COR Medical Centers', name: 'North Miami', address: '12550 Biscayne Blvd Ste 907, North Miami, FL', lat: 25.8903, lng: -80.1625},
+            {company: 'COR Medical Centers', name: 'Miami (Kendall)', address: '13501 SW 128th St, Miami, FL', lat: 25.6437, lng: -80.4089},
+            {company: 'COR Medical Centers', name: 'Doral', address: '4001 NW 97th Ave, Doral, FL', lat: 25.8195, lng: -80.3570},
+            {company: 'COR Medical Centers', name: 'Coral Way', address: '1333 Coral Way Ste 200, Miami, FL', lat: 25.7510, lng: -80.2148},
+            {company: 'COR Medical Centers', name: 'Hollywood', address: '3107 Stirling Rd, Hollywood, FL', lat: 26.0217, lng: -80.1831},
+            {company: 'COR Medical Centers', name: 'Homestead', address: '15600 SW 288th St Ste 403, Homestead, FL', lat: 25.4687, lng: -80.4557},
+            {company: 'COR Medical Centers', name: 'Hialeah', address: '1275 W 47th Pl Ste 301, Hialeah, FL', lat: 25.8706, lng: -80.3104},
+            {company: 'COR Medical Centers', name: 'Miami Gardens', address: '111 NW 183rd St #200, Miami, FL', lat: 25.9387, lng: -80.2045},
+            {company: 'COR Medical Centers', name: 'Jacksonville', address: 'Jacksonville, FL', lat: 30.3322, lng: -81.6557},
+            {company: 'COR Medical Centers', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
+            {company: 'COR Medical Centers', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948},
+            {company: 'COR Medical Centers', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723},
 
             // Action Physical Therapy
             {company: 'Action Physical Therapy', name: 'The Villages', address: '8564 East CR 466 Ste 303, The Villages, FL', lat: 28.9001, lng: -81.9437},
@@ -154,7 +552,7 @@
             {company: 'Action Physical Therapy', name: 'Hollywood', address: '3900 Hollywood Blvd Suite 204, Hollywood, FL', lat: 26.0112, lng: -80.1695},
             {company: 'Action Physical Therapy', name: 'North Miami Beach', address: '150 NW 168th St Suite 304, North Miami Beach, FL', lat: 25.9303, lng: -80.1973},
 
-            // Complete Care (Central Florida focus)
+            // Complete Care
             {company: 'Complete Care', name: 'Orlando (Forest City)', address: '7984 Forest City Rd Ste 106, Orlando, FL', lat: 28.6063, lng: -81.4268},
             {company: 'Complete Care', name: 'Orlando (Town Center)', address: '4118 Town Center Blvd, Orlando, FL', lat: 28.3826, lng: -81.4096},
             {company: 'Complete Care', name: 'Orlando (Colonial)', address: '2206 E Colonial Dr, Orlando, FL', lat: 28.5538, lng: -81.3517},
@@ -239,26 +637,22 @@
             {company: 'Physicians Group', name: 'Tampa North', address: 'N Florida Ave, Tampa, FL', lat: 28.0106, lng: -82.4572}
         ];
 
-        // Create marker clusters for each company
-        const clusters = {};
-        const layerGroups = {};
+        // State
+        let activeFilters = new Set(Object.keys(companies));
+        const markers = {};
+        const markerLayers = {};
 
-        Object.keys(colors).forEach(company => {
-            clusters[company] = L.markerClusterGroup({
-                iconCreateFunction: function(cluster) {
-                    const count = cluster.getChildCount();
-                    return L.divIcon({
-                        html: '<div style="background:' + colors[company] + ';color:white;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);">' + count + '</div>',
-                        className: 'marker-cluster',
-                        iconSize: [40, 40]
-                    });
-                }
-            });
+        // Create markers for each company
+        Object.keys(companies).forEach(company => {
+            markerLayers[company] = L.layerGroup();
+            markers[company] = [];
         });
 
         // Add markers
         locations.forEach(loc => {
-            const color = colors[loc.company] || '#666';
+            const companyData = companies[loc.company];
+            if (!companyData) return;
+            
             const isCor = loc.company === 'COR Medical Centers';
             
             let icon;
@@ -266,15 +660,15 @@
                 icon = L.divIcon({
                     className: 'cor-marker-wrapper',
                     html: '<div class="cor-marker"></div>',
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12]
+                    iconSize: [26, 26],
+                    iconAnchor: [13, 13]
                 });
             } else {
                 icon = L.divIcon({
                     className: 'custom-marker',
-                    html: '<div style="background:' + color + ';border-radius:50%;width:16px;height:16px;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);"></div>',
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8]
+                    html: `<div style="background:${companyData.color};border-radius:50%;width:14px;height:14px;border:2px solid rgba(255,255,255,0.8);box-shadow:0 0 12px ${companyData.color}80;"></div>`,
+                    iconSize: [14, 14],
+                    iconAnchor: [7, 7]
                 });
             }
 
@@ -282,55 +676,104 @@
             
             const popupContent = `
                 <div class="popup-content">
-                    <div class="info-header ${isCor ? 'cor' : ''}">
-                        ${isCor ? '★ ' : ''}${loc.company}
+                    <div class="popup-header ${isCor ? 'cor' : ''}">
+                        <div class="popup-company">${isCor ? '★ ' : ''}${loc.company}</div>
+                        <div class="popup-name">${loc.name}</div>
                     </div>
-                    <strong>${loc.name}</strong>
-                    <div class="popup-address">${loc.address}</div>
+                    <div class="popup-body">
+                        <div class="popup-address">${loc.address}</div>
+                    </div>
                 </div>
             `;
-            marker.bindPopup(popupContent);
+            marker.bindPopup(popupContent, { closeButton: false });
             
-            if (clusters[loc.company]) {
-                clusters[loc.company].addLayer(marker);
-            }
+            markerLayers[loc.company].addLayer(marker);
+            markers[loc.company].push(marker);
         });
 
-        // Add all clusters to map
-        Object.values(clusters).forEach(cluster => {
-            map.addLayer(cluster);
-        });
+        // Add all layers to map
+        Object.values(markerLayers).forEach(layer => layer.addTo(map));
 
-        // Add legend
-        const legend = L.control({position: 'topright'});
-        legend.onAdd = function(map) {
-            const div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<h3>Florida Chiropractic Centers</h3>';
+        // Build filter list
+        function buildFilterList() {
+            const filterList = document.getElementById('filter-list');
+            filterList.innerHTML = '';
             
-            // COR first with special styling
-            div.innerHTML += `
-                <div class="legend-item cor">
-                    <div class="legend-color"></div>
-                    <span>★ COR Medical Centers (Us)</span>
+            // COR first
+            const corCount = markers['COR Medical Centers']?.length || 0;
+            const corActive = activeFilters.has('COR Medical Centers');
+            filterList.innerHTML += `
+                <div class="filter-item cor ${corActive ? 'active' : 'inactive'}" onclick="toggleFilter('COR Medical Centers')">
+                    <div class="filter-color" style="background:${companies['COR Medical Centers'].color}"></div>
+                    <span class="filter-name">★ COR Medical Centers</span>
+                    <span class="filter-count">${corCount}</span>
                 </div>
             `;
             
-            // Other companies
-            Object.keys(colors).forEach(company => {
-                if (company !== 'COR Medical Centers') {
-                    const count = locations.filter(l => l.company === company).length;
-                    div.innerHTML += `
-                        <div class="legend-item">
-                            <div class="legend-color" style="background:${colors[company]}"></div>
-                            <span>${company} (${count})</span>
-                        </div>
-                    `;
-                }
+            // Rest sorted by count
+            const sorted = Object.keys(companies)
+                .filter(c => c !== 'COR Medical Centers')
+                .sort((a, b) => (markers[b]?.length || 0) - (markers[a]?.length || 0));
+            
+            sorted.forEach(company => {
+                const count = markers[company]?.length || 0;
+                const isActive = activeFilters.has(company);
+                filterList.innerHTML += `
+                    <div class="filter-item ${isActive ? 'active' : 'inactive'}" onclick="toggleFilter('${company}')">
+                        <div class="filter-color" style="background:${companies[company].color}"></div>
+                        <span class="filter-name">${company}</span>
+                        <span class="filter-count">${count}</span>
+                    </div>
+                `;
             });
             
-            return div;
-        };
-        legend.addTo(map);
+            updateStats();
+        }
+
+        // Toggle filter
+        function toggleFilter(company) {
+            if (activeFilters.has(company)) {
+                activeFilters.delete(company);
+                map.removeLayer(markerLayers[company]);
+            } else {
+                activeFilters.add(company);
+                markerLayers[company].addTo(map);
+            }
+            buildFilterList();
+        }
+
+        // Show all
+        function showAll() {
+            Object.keys(companies).forEach(company => {
+                activeFilters.add(company);
+                if (!map.hasLayer(markerLayers[company])) {
+                    markerLayers[company].addTo(map);
+                }
+            });
+            buildFilterList();
+        }
+
+        // Update stats
+        function updateStats() {
+            const totalLocs = locations.length;
+            const totalEntities = Object.keys(companies).length;
+            let visible = 0;
+            activeFilters.forEach(company => {
+                visible += markers[company]?.length || 0;
+            });
+            
+            document.getElementById('total-locations').textContent = totalLocs;
+            document.getElementById('total-entities').textContent = totalEntities;
+            document.getElementById('visible-count').textContent = visible;
+        }
+
+        // Toggle panel
+        function togglePanel() {
+            document.getElementById('panel').classList.toggle('collapsed');
+        }
+
+        // Initialize
+        buildFilterList();
     </script>
 </body>
 </html>
