@@ -1,5 +1,6 @@
 // Florida Chiropractic/Medical Centers Location Data
-// Last updated: 2026-04-03
+// Last updated: 2026-04-03 12:23 PM
+// Total: 18 companies, ~180 locations
 
 const companies = {
     'COR Medical Centers': { color: '#1e3a5f', initials: 'COR', isUs: true },
@@ -13,12 +14,18 @@ const companies = {
     'Total MD': { color: '#dc2626', initials: 'TMD' },
     'County Line Chiropractic': { color: '#10b981', initials: 'CLC' },
     'Fusion Chiropractic Spa': { color: '#ea580c', initials: 'FCS' },
-    'Goldson Spine': { color: '#2563eb', initials: 'GS' }
+    'Goldson Spine': { color: '#2563eb', initials: 'GS' },
+    'Chiro Clinics of South FL': { color: '#06b6d4', initials: 'CCSF' },
+    'Spine & Wellness Centers': { color: '#ec4899', initials: 'SWC' },
+    'Icon Medical Centers': { color: '#84cc16', initials: 'IMC' },
+    'FL Wellness & Rehab': { color: '#f43f5e', initials: 'FWR' },
+    'FL Wellness Medical Group': { color: '#6366f1', initials: 'FWMG' },
+    'Florida Injury Centers': { color: '#78716c', initials: 'FIC' }
 };
 
 const locations = [
     // ============================================
-    // COR Medical Centers - 17 verified locations
+    // COR Medical Centers - 17 locations
     // ============================================
     {company: 'COR Medical Centers', name: 'Orlando', address: '1320 N Semoran Blvd, Ste 102, Orlando, FL 32807', lat: 28.5584, lng: -81.3057},
     {company: 'COR Medical Centers', name: 'North Miami', address: '12550 Biscayne Blvd, Ste 907, North Miami, FL 33181', lat: 25.8903, lng: -80.1625},
@@ -39,7 +46,75 @@ const locations = [
     {company: 'COR Medical Centers', name: 'Naples', address: 'Naples, FL 34102', lat: 26.1420, lng: -81.7948},
 
     // ============================================
-    // Complete Care - 20+ locations (Central FL focus)
+    // Chiro Clinics of South FL - 8 locations (NEW)
+    // ============================================
+    {company: 'Chiro Clinics of South FL', name: 'Pompano Beach (HQ)', address: '1410 S Powerline Rd, Pompano Beach, FL 33069', lat: 26.2279, lng: -80.1448},
+    {company: 'Chiro Clinics of South FL', name: 'North Miami', address: '12550 Biscayne Blvd, Ste 404, North Miami, FL 33154', lat: 25.8903, lng: -80.1625},
+    {company: 'Chiro Clinics of South FL', name: 'Miami Airport', address: '701 NW 57th Ave, Miami, FL 33126', lat: 25.7817, lng: -80.2678},
+    {company: 'Chiro Clinics of South FL', name: 'Kendall', address: 'Kendall, FL 33176', lat: 25.6887, lng: -80.3389},
+    {company: 'Chiro Clinics of South FL', name: 'Miami Lakes', address: 'Miami Lakes, FL 33014', lat: 25.9087, lng: -80.3104},
+    {company: 'Chiro Clinics of South FL', name: 'Hollywood', address: '7050 Taft St, Hollywood, FL 33024', lat: 26.0312, lng: -80.1995},
+    {company: 'Chiro Clinics of South FL', name: 'West Palm Beach', address: '2247 Palm Beach Lakes Blvd, West Palm Beach, FL 33409', lat: 26.7153, lng: -80.0864},
+    {company: 'Chiro Clinics of South FL', name: 'Hialeah', address: 'Hialeah, FL 33012', lat: 25.8576, lng: -80.2781},
+
+    // ============================================
+    // Spine & Wellness Centers of America - 7 locations (NEW)
+    // ============================================
+    {company: 'Spine & Wellness Centers', name: 'Kendall', address: '8740 N Kendall Dr, Suite 208, Miami, FL 33176', lat: 25.6887, lng: -80.3389},
+    {company: 'Spine & Wellness Centers', name: 'Miami Beach', address: '300 Arthur Godfrey Rd, Suite 201, Miami Beach, FL 33140', lat: 25.8153, lng: -80.1320},
+    {company: 'Spine & Wellness Centers', name: 'Aventura', address: '21097 NE 27th Court, Suite 320, Aventura, FL 33180', lat: 25.9565, lng: -80.1392},
+    {company: 'Spine & Wellness Centers', name: 'Miami (Brickell)', address: '3661 South Miami Ave, Suite 1008, Miami, FL 33133', lat: 25.7417, lng: -80.2178},
+    {company: 'Spine & Wellness Centers', name: 'Fort Lauderdale', address: '4800 NE 20th Terrace, Suite 404, Fort Lauderdale, FL 33308', lat: 26.1868, lng: -80.1187},
+    {company: 'Spine & Wellness Centers', name: 'Tamarac', address: '7421 N University Dr, Unit 212, Tamarac, FL 33321', lat: 26.2128, lng: -80.2506},
+    {company: 'Spine & Wellness Centers', name: 'Delray Beach', address: '4800 Linton Blvd, Suite D-501, Delray Beach, FL 33445', lat: 26.4380, lng: -80.1184},
+
+    // ============================================
+    // Icon Medical Centers - 2 locations (NEW)
+    // ============================================
+    {company: 'Icon Medical Centers', name: 'Miami', address: '232 SW 8th St, Miami, FL 33130', lat: 25.7717, lng: -80.1978},
+    {company: 'Icon Medical Centers', name: 'Hollywood', address: '3625 Hollywood Blvd, Hollywood, FL 33021', lat: 26.0112, lng: -80.1695},
+
+    // ============================================
+    // FL Wellness & Rehab - 3 locations (NEW)
+    // ============================================
+    {company: 'FL Wellness & Rehab', name: 'Homestead', address: '207 N Krome Ave, Homestead, FL 33030', lat: 25.4719, lng: -80.4772},
+    {company: 'FL Wellness & Rehab', name: 'Tallahassee', address: '2339 N Monroe St, Tallahassee, FL 32303', lat: 30.4718, lng: -84.2898},
+    {company: 'FL Wellness & Rehab', name: 'Hialeah', address: '2387 W 68th St, Suite 402-404, Hialeah, FL 33016', lat: 25.8906, lng: -80.3304},
+
+    // ============================================
+    // FL Wellness Medical Group - 4 locations (NEW)
+    // ============================================
+    {company: 'FL Wellness Medical Group', name: 'Tampa (Downtown)', address: '101 N Franklin St, Ste A, Tampa, FL 33602', lat: 27.9506, lng: -82.4572},
+    {company: 'FL Wellness Medical Group', name: 'St. Petersburg', address: 'St. Petersburg, FL 33701', lat: 27.7676, lng: -82.6403},
+    {company: 'FL Wellness Medical Group', name: 'Clearwater', address: 'Clearwater, FL 33755', lat: 27.9659, lng: -82.8001},
+    {company: 'FL Wellness Medical Group', name: 'Carrollwood', address: 'Carrollwood, FL 33618', lat: 28.0556, lng: -82.5172},
+
+    // ============================================
+    // Florida Injury Centers - 25 locations (NEW - partial list)
+    // ============================================
+    {company: 'Florida Injury Centers', name: 'Jacksonville', address: 'Jacksonville, FL 32207', lat: 30.3322, lng: -81.6557},
+    {company: 'Florida Injury Centers', name: 'Tampa', address: 'Tampa, FL 33607', lat: 27.9506, lng: -82.4572},
+    {company: 'Florida Injury Centers', name: 'Orlando', address: 'Orlando, FL 32801', lat: 28.5383, lng: -81.3792},
+    {company: 'Florida Injury Centers', name: 'St. Petersburg', address: 'St. Petersburg, FL 33701', lat: 27.7676, lng: -82.6403},
+    {company: 'Florida Injury Centers', name: 'Lakeland', address: 'Lakeland, FL 33801', lat: 28.0395, lng: -81.9498},
+    {company: 'Florida Injury Centers', name: 'Sarasota', address: 'Sarasota, FL 34231', lat: 27.3364, lng: -82.5307},
+    {company: 'Florida Injury Centers', name: 'Fort Myers', address: 'Fort Myers, FL 33901', lat: 26.6406, lng: -81.8723},
+    {company: 'Florida Injury Centers', name: 'Gainesville', address: 'Gainesville, FL 32601', lat: 29.6516, lng: -82.3248},
+    {company: 'Florida Injury Centers', name: 'Tallahassee', address: 'Tallahassee, FL 32301', lat: 30.4383, lng: -84.2807},
+    {company: 'Florida Injury Centers', name: 'Pensacola', address: 'Pensacola, FL 32501', lat: 30.4213, lng: -87.2169},
+    {company: 'Florida Injury Centers', name: 'Daytona Beach', address: 'Daytona Beach, FL 32114', lat: 29.2108, lng: -81.0228},
+    {company: 'Florida Injury Centers', name: 'Port Orange', address: '3821 Woodbriar Trail, Suite 103, Port Orange, FL 32129', lat: 29.1383, lng: -81.0028},
+    {company: 'Florida Injury Centers', name: 'Ocala', address: 'Ocala, FL 34470', lat: 29.1872, lng: -82.1401},
+    {company: 'Florida Injury Centers', name: 'West Palm Beach', address: 'West Palm Beach, FL 33401', lat: 26.7153, lng: -80.0534},
+    {company: 'Florida Injury Centers', name: 'Delray Beach', address: 'Delray Beach, FL 33445', lat: 26.4615, lng: -80.0728},
+    {company: 'Florida Injury Centers', name: 'Sunrise', address: 'Sunrise, FL 33313', lat: 26.1640, lng: -80.2407},
+    {company: 'Florida Injury Centers', name: 'Brandon', address: 'Brandon, FL 33511', lat: 27.9378, lng: -82.2859},
+    {company: 'Florida Injury Centers', name: 'New Port Richey', address: 'New Port Richey, FL 34655', lat: 28.2489, lng: -82.7193},
+    {company: 'Florida Injury Centers', name: 'Wesley Chapel', address: 'Wesley Chapel, FL 33544', lat: 28.2397, lng: -82.3276},
+    {company: 'Florida Injury Centers', name: 'Winter Haven', address: 'Winter Haven, FL 33880', lat: 28.0222, lng: -81.7328},
+
+    // ============================================
+    // Complete Care - 21 locations
     // ============================================
     {company: 'Complete Care', name: 'Orlando (Forest City)', address: '7984 Forest City Rd, Ste 106, Orlando, FL 32810', lat: 28.6063, lng: -81.4268},
     {company: 'Complete Care', name: 'Lake Mary', address: '1343 S International Pkwy, Lake Mary, FL 32746', lat: 28.7589, lng: -81.3178},
@@ -64,7 +139,7 @@ const locations = [
     {company: 'Complete Care', name: 'Titusville', address: 'Titusville, FL 32796', lat: 28.6122, lng: -80.8076},
 
     // ============================================
-    // Action Physical Therapy - 24 locations
+    // Action Physical Therapy - 22 locations
     // ============================================
     {company: 'Action Physical Therapy', name: 'Hollywood', address: '3900 Hollywood Blvd, Ste 204, Hollywood, FL 33021', lat: 26.0112, lng: -80.1695},
     {company: 'Action Physical Therapy', name: 'Port St. Lucie East', address: '1680 SE Lyngate Dr, Ste 203, Port St. Lucie, FL 34952', lat: 27.2753, lng: -80.3256},
@@ -90,9 +165,9 @@ const locations = [
     {company: 'Action Physical Therapy', name: 'Daytona Beach', address: '369 Bill France Blvd, Daytona Beach, FL 32114', lat: 29.1872, lng: -81.0584},
 
     // ============================================
-    // Path Medical - 22+ locations
+    // Path Medical - 20 locations
     // ============================================
-    {company: 'Path Medical', name: 'Oakland Park (Broward)', address: '2659 W Oakland Park Blvd, Oakland Park, FL 33311', lat: 26.1668, lng: -80.1542},
+    {company: 'Path Medical', name: 'Oakland Park', address: '2659 W Oakland Park Blvd, Oakland Park, FL 33311', lat: 26.1668, lng: -80.1542},
     {company: 'Path Medical', name: 'Pompano Beach', address: '601 E Sample Rd, Ste 109, Pompano Beach, FL 33064', lat: 26.2479, lng: -80.1148},
     {company: 'Path Medical', name: 'Orlando (OBT)', address: '6220 S Orange Blossom Trl, Ste 606, Orlando, FL 32809', lat: 28.4683, lng: -81.3992},
     {company: 'Path Medical', name: 'Hollywood', address: '2544 N State Road 7, Pembroke Park, FL 33021', lat: 26.0112, lng: -80.1495},
@@ -106,7 +181,7 @@ const locations = [
     {company: 'Path Medical', name: 'Fort Lauderdale', address: '2304 W Oakland Park Blvd, Fort Lauderdale, FL 33311', lat: 26.1668, lng: -80.1642},
     {company: 'Path Medical', name: 'Pembroke Pines', address: 'Pembroke Pines, FL 33024', lat: 26.0128, lng: -80.2962},
     {company: 'Path Medical', name: 'Orlando Central', address: 'Orlando, FL 32801', lat: 28.5383, lng: -81.3792},
-    {company: 'Path Medical', name: 'Tampa Central', address: '4221 N Himes Ave, Ste 102, Tampa, FL 33607', lat: 27.9606, lng: -82.5072},
+    {company: 'Path Medical', name: 'Tampa', address: '4221 N Himes Ave, Ste 102, Tampa, FL 33607', lat: 27.9606, lng: -82.5072},
     {company: 'Path Medical', name: 'Lakeland', address: 'Lakeland, FL 33801', lat: 28.0395, lng: -81.9498},
     {company: 'Path Medical', name: 'St. Petersburg', address: 'St. Petersburg, FL 33701', lat: 27.7676, lng: -82.6403},
     {company: 'Path Medical', name: 'Haines City', address: 'Haines City, FL 33844', lat: 28.1142, lng: -81.6179},
@@ -114,7 +189,7 @@ const locations = [
     {company: 'Path Medical', name: 'Tamarac', address: 'Tamarac, FL 33321', lat: 26.2128, lng: -80.2506},
 
     // ============================================
-    // Physicians Group - 26 locations
+    // Physicians Group - 17 locations
     // ============================================
     {company: 'Physicians Group', name: 'Jacksonville Beach', address: '4417 Beach Blvd, Jacksonville, FL 32207', lat: 30.2866, lng: -81.6062},
     {company: 'Physicians Group', name: 'Tampa North', address: 'N Florida Ave, Tampa, FL 33612', lat: 28.0106, lng: -82.4572},
@@ -135,7 +210,7 @@ const locations = [
     {company: 'Physicians Group', name: 'Gainesville', address: 'Gainesville, FL 32601', lat: 29.6516, lng: -82.3248},
 
     // ============================================
-    // ChiroCare of Florida - 10 locations (VERIFIED)
+    // ChiroCare of Florida - 10 locations
     // ============================================
     {company: 'ChiroCare of Florida', name: 'Aventura', address: '20601 E Dixie Hwy STE 410, Aventura, FL 33180', lat: 25.9565, lng: -80.1392},
     {company: 'ChiroCare of Florida', name: 'Boca Raton', address: '9325 Glades Rd #108, Boca Raton, FL 33434', lat: 26.3683, lng: -80.1531},
