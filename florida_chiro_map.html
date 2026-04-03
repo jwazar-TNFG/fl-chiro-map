@@ -18,9 +18,7 @@
             --text-secondary: #8b949e;
             --text-muted: #6e7681;
             --cor-navy: #1e3a5f;
-            --cor-blue: #2563eb;
             --accent-gold: #f59e0b;
-            --accent-blue: #58a6ff;
         }
         
         body { 
@@ -30,24 +28,20 @@
             overflow: hidden;
         }
         
-        #map { 
-            height: 100vh; 
-            width: 100%; 
-        }
-        
+        #map { height: 100vh; width: 100%; }
         .leaflet-control-zoom { display: none; }
         
-        /* Main Panel */
+        /* Compact Panel */
         .panel {
             position: fixed;
-            top: 16px;
-            right: 16px;
-            width: 320px;
-            max-height: calc(100vh - 32px);
+            top: 12px;
+            right: 12px;
+            width: 280px;
+            max-height: calc(100vh - 24px);
             background: var(--bg-panel);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -55,150 +49,107 @@
             transition: all 0.3s ease;
         }
         
-        .panel.collapsed {
-            width: auto;
-        }
-        
-        .panel.collapsed .panel-body,
-        .panel.collapsed .panel-footer {
-            display: none;
-        }
+        .panel.collapsed { width: auto; }
+        .panel.collapsed .panel-body { display: none; }
         
         .panel-header {
-            padding: 16px 20px;
+            padding: 12px 16px;
             background: linear-gradient(135deg, var(--cor-navy) 0%, #0f2744 100%);
-            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            user-select: none;
-        }
-        
-        .panel-header:hover {
-            background: linear-gradient(135deg, #254a73 0%, #1a3a5c 100%);
         }
         
         .panel-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .panel-title h2 {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            color: var(--text-primary);
         }
         
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: var(--accent-gold);
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
         }
         
         .collapse-btn {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
+            border-radius: 4px;
             color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
         }
         
-        .collapse-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .panel.collapsed .collapse-btn {
-            transform: rotate(180deg);
-        }
+        .panel.collapsed .collapse-btn { transform: rotate(180deg); }
         
         .panel-body {
             flex: 1;
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
         }
         
-        .panel-body::-webkit-scrollbar {
-            width: 6px;
-        }
+        .panel-body::-webkit-scrollbar { width: 4px; }
+        .panel-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
         
-        .panel-body::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        .panel-body::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-        
-        /* Stats Bar */
+        /* Compact Stats */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            padding: 12px;
+            gap: 6px;
+            padding: 10px;
             background: var(--bg-card);
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
         }
         
-        .stat {
-            text-align: center;
-        }
+        .stat { text-align: center; }
         
         .stat-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--accent-blue);
+            color: var(--cor-navy);
         }
         
         .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-muted);
-            margin-top: 2px;
         }
         
         /* Filter List */
-        .filter-section {
-            margin-bottom: 8px;
-        }
-        
         .filter-section-title {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
-            padding: 8px 8px 6px;
+            padding: 6px 6px 4px;
         }
         
         .filter-item {
             display: flex;
             align-items: center;
-            padding: 10px 12px;
+            padding: 8px 10px;
             margin: 2px 0;
             background: var(--bg-card);
             border: 1px solid transparent;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -209,23 +160,16 @@
         }
         
         .filter-item.active {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.15);
+            border-color: var(--cor-navy);
+            box-shadow: 0 0 8px rgba(30, 58, 95, 0.3);
         }
         
-        .filter-item.inactive {
-            opacity: 0.4;
-        }
+        .filter-item.inactive { opacity: 0.4; }
         
         .filter-item.cor {
-            background: linear-gradient(90deg, rgba(30, 58, 95, 0.5) 0%, var(--bg-card) 100%);
-            border-color: var(--cor-navy);
-            border-width: 2px;
-        }
-        
-        .filter-item.cor.active {
+            background: linear-gradient(90deg, rgba(30, 58, 95, 0.4) 0%, var(--bg-card) 100%);
             border-color: var(--accent-gold);
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+            border-width: 2px;
         }
         
         .filter-item.cor.inactive {
@@ -235,21 +179,20 @@
         }
         
         .filter-color {
-            width: 14px;
-            height: 14px;
-            border-radius: 4px;
-            margin-right: 12px;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 10px;
             flex-shrink: 0;
         }
         
         .filter-item.cor .filter-color {
             border: 2px solid var(--accent-gold);
-            box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
         }
         
         .filter-name {
             flex: 1;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
         }
         
@@ -260,16 +203,16 @@
         
         .filter-count {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             background: var(--bg-dark);
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
         }
         
         .filter-item.active .filter-count {
-            background: var(--accent-blue);
-            color: var(--bg-dark);
+            background: var(--cor-navy);
+            color: white;
         }
         
         .filter-item.cor.active .filter-count {
@@ -277,37 +220,24 @@
             color: var(--bg-dark);
         }
         
-        /* Show All Button */
         .show-all-btn {
             width: 100%;
-            padding: 10px;
-            margin-top: 8px;
+            padding: 8px;
+            margin-top: 6px;
             background: transparent;
             border: 1px dashed var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 11px;
             cursor: pointer;
-            transition: all 0.2s;
         }
         
         .show-all-btn:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
+            border-color: var(--cor-navy);
+            color: var(--cor-navy);
         }
         
-        /* Info Footer */
-        .panel-footer {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-            background: var(--bg-card);
-            font-size: 10px;
-            color: var(--text-muted);
-            text-align: center;
-        }
-        
-        /* Custom Markers with Labels */
+        /* Markers */
         .marker-container {
             display: flex;
             align-items: center;
@@ -315,37 +245,34 @@
         }
         
         .marker-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             border: 2px solid white;
             flex-shrink: 0;
         }
         
         .marker-icon.cor {
             border-color: #f59e0b;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5), 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
         }
         
         .marker-label {
-            margin-left: 6px;
-            padding: 3px 8px;
+            margin-left: 5px;
+            padding: 2px 6px;
             background: rgba(255,255,255,0.95);
-            border-radius: 4px;
-            font-size: 11px;
+            border-radius: 3px;
+            font-size: 10px;
             font-weight: 600;
             color: #1a1a1a;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
         .marker-label.cor {
@@ -358,28 +285,19 @@
         .leaflet-popup-content-wrapper {
             background: var(--bg-panel);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         
-        .leaflet-popup-content {
-            margin: 0;
-            color: var(--text-primary);
-        }
+        .leaflet-popup-content { margin: 0; color: var(--text-primary); }
+        .leaflet-popup-tip { background: var(--bg-panel); }
         
-        .leaflet-popup-tip {
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-        }
-        
-        .popup-content {
-            min-width: 200px;
-        }
+        .popup-content { min-width: 180px; }
         
         .popup-header {
-            padding: 12px 16px;
+            padding: 10px 14px;
             background: var(--bg-card);
-            border-radius: 8px 8px 0 0;
+            border-radius: 6px 6px 0 0;
             margin: -1px -1px 0 -1px;
             border-bottom: 1px solid var(--border);
         }
@@ -390,51 +308,37 @@
         }
         
         .popup-company {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         
-        .popup-header.cor .popup-company {
-            color: var(--accent-gold);
-        }
+        .popup-header.cor .popup-company { color: var(--accent-gold); }
+        .popup-name { font-size: 14px; font-weight: 600; }
+        .popup-body { padding: 10px 14px; }
+        .popup-address { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
         
-        .popup-name {
-            font-size: 15px;
-            font-weight: 600;
-        }
-        
-        .popup-body {
-            padding: 12px 16px;
-        }
-        
-        .popup-address {
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-        
-        /* Zoom Controls */
-        .zoom-controls {
+        /* Controls */
+        .map-controls {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 20px;
+            right: 20px;
             display: flex;
             flex-direction: column;
             gap: 4px;
             z-index: 1000;
         }
         
-        .zoom-btn {
-            width: 40px;
-            height: 40px;
+        .ctrl-btn {
+            width: 36px;
+            height: 36px;
             background: var(--bg-panel);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-primary);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -442,39 +346,22 @@
             transition: all 0.2s;
         }
         
-        .zoom-btn:hover {
+        .ctrl-btn:hover {
             background: var(--bg-card);
-            border-color: var(--accent-blue);
+            border-color: var(--cor-navy);
         }
         
-        /* Label Toggle */
-        .label-toggle {
-            position: fixed;
-            bottom: 120px;
-            right: 24px;
-            z-index: 1000;
+        .ctrl-btn.active {
+            background: var(--cor-navy);
+            border-color: var(--cor-navy);
         }
         
-        .label-toggle button {
-            padding: 8px 12px;
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .ctrl-btn svg { width: 18px; height: 18px; }
         
-        .label-toggle button:hover {
-            border-color: var(--accent-blue);
-            color: var(--text-primary);
-        }
-        
-        .label-toggle button.active {
-            background: var(--accent-blue);
-            color: var(--bg-dark);
-            border-color: var(--accent-blue);
+        .ctrl-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
         }
         
         /* Mobile */
@@ -485,29 +372,11 @@
                 left: 0;
                 right: 0;
                 width: 100%;
-                max-height: 50vh;
-                border-radius: 16px 16px 0 0;
+                max-height: 45vh;
+                border-radius: 12px 12px 0 0;
             }
-            
-            .panel.collapsed {
-                max-height: auto;
-            }
-            
-            .zoom-controls {
-                bottom: auto;
-                top: 16px;
-                right: 16px;
-            }
-            
-            .label-toggle {
-                bottom: auto;
-                top: 120px;
-                right: 16px;
-            }
-            
-            .marker-label {
-                display: none;
-            }
+            .map-controls { bottom: auto; top: 12px; right: 12px; }
+            .marker-label { display: none; }
         }
     </style>
 </head>
@@ -521,7 +390,7 @@
                 <h2>Entity Tracking</h2>
             </div>
             <div class="collapse-btn">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                     <path d="M9 4.5L6 7.5L3 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
             </div>
@@ -545,37 +414,46 @@
             <div class="filter-section">
                 <div class="filter-section-title">Organizations</div>
                 <div id="filter-list"></div>
-                <button class="show-all-btn" onclick="showAll()">Show All Organizations</button>
+                <button class="show-all-btn" onclick="showAll()">Show All</button>
             </div>
         </div>
-        <div class="panel-footer">
-            Florida Medical Centers Intelligence • COR Medical Group
-        </div>
     </div>
     
-    <div class="label-toggle">
-        <button id="labelToggle" class="active" onclick="toggleLabels()">Labels ON</button>
-    </div>
-    
-    <div class="zoom-controls">
-        <button class="zoom-btn" onclick="map.zoomIn()">+</button>
-        <button class="zoom-btn" onclick="map.zoomOut()">−</button>
+    <div class="map-controls">
+        <button class="ctrl-btn" onclick="map.zoomIn()" title="Zoom In">+</button>
+        <button class="ctrl-btn" onclick="map.zoomOut()" title="Zoom Out">−</button>
+        <div class="ctrl-divider"></div>
+        <button class="ctrl-btn" onclick="resetView()" title="Reset View">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v4m0 12v4m10-10h-4M6 12H2"/>
+            </svg>
+        </button>
+        <div class="ctrl-divider"></div>
+        <button class="ctrl-btn" id="labelToggle" onclick="toggleLabels()" title="Toggle Labels">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7h16M4 12h16M4 17h10"/>
+            </svg>
+        </button>
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize map
-        const map = L.map('map', {
-            zoomControl: false
-        }).setView([27.6648, -81.5158], 7);
+        const FLORIDA_CENTER = [27.6648, -81.5158];
+        const FLORIDA_ZOOM = 7;
         
-        // Readable map tiles
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-            attribution: '© Stadia Maps © OpenStreetMap',
-            maxZoom: 20
+        const map = L.map('map', { zoomControl: false }).setView(FLORIDA_CENTER, FLORIDA_ZOOM);
+        
+        // OpenStreetMap tiles - no auth required
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
         }).addTo(map);
 
-        // Company data with initials
+        function resetView() {
+            map.setView(FLORIDA_CENTER, FLORIDA_ZOOM);
+        }
+
         const companies = {
             'COR Medical Centers': { color: '#1e3a5f', initials: 'COR', isUs: true },
             'Complete Care': { color: '#ef4444', initials: 'CC' },
@@ -591,9 +469,7 @@
             'Goldson Spine': { color: '#2563eb', initials: 'GS' }
         };
 
-        // Location data
         const locations = [
-            // COR Medical Centers
             {company: 'COR Medical Centers', name: 'Orlando', address: '1320 N Semoran Blvd, Orlando, FL', lat: 28.5584, lng: -81.3057},
             {company: 'COR Medical Centers', name: 'North Miami', address: '12550 Biscayne Blvd Ste 907, North Miami, FL', lat: 25.8903, lng: -80.1625},
             {company: 'COR Medical Centers', name: 'Miami (Kendall)', address: '13501 SW 128th St, Miami, FL', lat: 25.6437, lng: -80.4089},
@@ -607,8 +483,6 @@
             {company: 'COR Medical Centers', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
             {company: 'COR Medical Centers', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948},
             {company: 'COR Medical Centers', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723},
-
-            // Action Physical Therapy
             {company: 'Action Physical Therapy', name: 'The Villages', address: '8564 East CR 466 Ste 303, The Villages, FL', lat: 28.9001, lng: -81.9437},
             {company: 'Action Physical Therapy', name: 'Miami', address: '930 SW 82nd Ave, Miami, FL', lat: 25.7617, lng: -80.3128},
             {company: 'Action Physical Therapy', name: 'Palm Beach Gardens', address: '10358 Riverside Dr #140, Palm Beach Gardens, FL', lat: 26.8234, lng: -80.0917},
@@ -627,8 +501,6 @@
             {company: 'Action Physical Therapy', name: 'Davie', address: '5149 S University Dr, Davie, FL', lat: 26.0650, lng: -80.2378},
             {company: 'Action Physical Therapy', name: 'Hollywood', address: '3900 Hollywood Blvd Suite 204, Hollywood, FL', lat: 26.0112, lng: -80.1695},
             {company: 'Action Physical Therapy', name: 'North Miami Beach', address: '150 NW 168th St Suite 304, North Miami Beach, FL', lat: 25.9303, lng: -80.1973},
-
-            // Complete Care
             {company: 'Complete Care', name: 'Orlando (Forest City)', address: '7984 Forest City Rd Ste 106, Orlando, FL', lat: 28.6063, lng: -81.4268},
             {company: 'Complete Care', name: 'Orlando (Town Center)', address: '4118 Town Center Blvd, Orlando, FL', lat: 28.3826, lng: -81.4096},
             {company: 'Complete Care', name: 'Orlando (Colonial)', address: '2206 E Colonial Dr, Orlando, FL', lat: 28.5538, lng: -81.3517},
@@ -642,8 +514,6 @@
             {company: 'Complete Care', name: "Hunter's Creek", address: "Hunter's Creek, FL", lat: 28.3560, lng: -81.4220},
             {company: 'Complete Care', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
             {company: 'Complete Care', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
-
-            // Path Medical
             {company: 'Path Medical', name: 'Fort Lauderdale', address: '2304 W Oakland Park Blvd, Fort Lauderdale, FL', lat: 26.1668, lng: -80.1542},
             {company: 'Path Medical', name: 'North Miami', address: '18999 Biscayne Blvd, Miami, FL', lat: 25.9553, lng: -80.1420},
             {company: 'Path Medical', name: 'Hollywood', address: 'Hollywood, FL', lat: 26.0112, lng: -80.1495},
@@ -656,56 +526,40 @@
             {company: 'Path Medical', name: 'Kissimmee', address: 'Kissimmee, FL', lat: 28.2920, lng: -81.4076},
             {company: 'Path Medical', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
             {company: 'Path Medical', name: 'St. Petersburg', address: 'St. Petersburg, FL', lat: 27.7676, lng: -82.6403},
-
-            // ChiroCare of Florida
             {company: 'ChiroCare of Florida', name: 'Coral Springs', address: 'W Sample Rd, Coral Springs, FL', lat: 26.2712, lng: -80.2706},
             {company: 'ChiroCare of Florida', name: 'Aventura', address: 'Aventura, FL', lat: 25.9565, lng: -80.1392},
             {company: 'ChiroCare of Florida', name: 'Fort Lauderdale', address: 'Fort Lauderdale, FL', lat: 26.1224, lng: -80.1373},
             {company: 'ChiroCare of Florida', name: 'Pompano Beach', address: '1301 E Atlantic Blvd Ste 2, Pompano Beach, FL', lat: 26.2379, lng: -80.1048},
             {company: 'ChiroCare of Florida', name: 'Boca Raton', address: '9325 Glades Rd Ste 108, Boca Raton, FL', lat: 26.3683, lng: -80.1531},
             {company: 'ChiroCare of Florida', name: 'Weston', address: '4470 Weston Rd, Fort Lauderdale, FL', lat: 26.1003, lng: -80.3997},
-
-            // Back to Mind
             {company: 'Back to Mind', name: 'Fort Lauderdale', address: '6450 NW 5th Way, Fort Lauderdale, FL', lat: 26.1943, lng: -80.1787},
             {company: 'Back to Mind', name: 'Hollywood', address: '3990 Sheridan St Suite 201, Hollywood, FL', lat: 26.0217, lng: -80.2031},
             {company: 'Back to Mind', name: 'North Miami', address: '1125 NE 125th St unit 303, North Miami, FL', lat: 25.8903, lng: -80.1825},
             {company: 'Back to Mind', name: 'Tamarac', address: '7431 N University Dr #206, Tamarac, FL', lat: 26.2128, lng: -80.2506},
             {company: 'Back to Mind', name: 'West Palm Beach', address: '4700 N Congress Ave Suite 202, West Palm Beach, FL', lat: 26.7553, lng: -80.0864},
             {company: 'Back to Mind', name: 'Coral Springs', address: '2825 N University Dr, Coral Springs, FL', lat: 26.2712, lng: -80.2506},
-
-            // RejuvenX
             {company: 'RejuvenX', name: 'Sarasota', address: 'Sarasota, FL', lat: 27.3364, lng: -82.5307},
             {company: 'RejuvenX', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948},
             {company: 'RejuvenX', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723},
             {company: 'RejuvenX', name: 'Port Charlotte', address: 'Port Charlotte, FL', lat: 26.9756, lng: -82.0906},
             {company: 'RejuvenX', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
             {company: 'RejuvenX', name: 'Royal Palm Beach', address: 'Royal Palm Beach, FL', lat: 26.7081, lng: -80.2304},
-
-            // County Line Chiropractic
             {company: 'County Line Chiropractic', name: 'Miami Gardens', address: 'Miami Gardens, FL', lat: 25.9420, lng: -80.2456},
             {company: 'County Line Chiropractic', name: 'North Miami Beach', address: '1857 NE Miami Gardens Dr, North Miami Beach, FL', lat: 25.9333, lng: -80.1673},
             {company: 'County Line Chiropractic', name: 'Pembroke Pines', address: 'Pembroke Pines, FL', lat: 26.0128, lng: -80.2962},
             {company: 'County Line Chiropractic', name: 'Plantation', address: '199 N State Road 7, Plantation, FL', lat: 26.1225, lng: -80.2563},
             {company: 'County Line Chiropractic', name: 'Lauderhill', address: 'Commercial & University, Lauderhill, FL', lat: 26.1661, lng: -80.2134},
             {company: 'County Line Chiropractic', name: 'Oakland Park', address: '926 E Cypress Creek Rd, Fort Lauderdale, FL', lat: 26.1887, lng: -80.1279},
-
-            // Total MD
             {company: 'Total MD', name: 'Fort Lauderdale', address: '2700 W Cypress Creek Rd Ste C100, Fort Lauderdale, FL', lat: 26.1868, lng: -80.1687},
             {company: 'Total MD', name: 'Boca Raton', address: '1905 Clint Moore Rd Ste 308, Boca Raton, FL', lat: 26.4015, lng: -80.1031},
             {company: 'Total MD', name: 'Coral Springs', address: 'Coral Springs, FL', lat: 26.2712, lng: -80.2706},
-
-            // Fusion Chiropractic Spa
             {company: 'Fusion Chiropractic Spa', name: 'Delray Beach', address: '1836 S Federal Hwy, Delray Beach, FL', lat: 26.4515, lng: -80.0706},
             {company: 'Fusion Chiropractic Spa', name: 'Boynton Beach', address: '3717 W Boynton Beach Blvd #9, Boynton Beach, FL', lat: 26.5217, lng: -80.1167},
             {company: 'Fusion Chiropractic Spa', name: 'Coconut Creek', address: '1383 Lyons Rd, Coconut Creek, FL', lat: 26.2778, lng: -80.1892},
-
-            // Goldson Spine
             {company: 'Goldson Spine', name: 'North Lauderdale', address: '1335 South State Road 7, North Lauderdale, FL', lat: 26.2178, lng: -80.2234},
             {company: 'Goldson Spine', name: 'Plantation', address: '734 N State Rd 7, Plantation, FL', lat: 26.1325, lng: -80.2563},
             {company: 'Goldson Spine', name: 'Pembroke Pines', address: '10796 Pines Blvd #101, Pembroke Pines, FL', lat: 26.0128, lng: -80.3362},
             {company: 'Goldson Spine', name: 'Aventura', address: 'Aventura, FL', lat: 25.9565, lng: -80.1392},
-
-            // Physicians Group
             {company: 'Physicians Group', name: 'Jacksonville Normandy', address: 'Jacksonville, FL', lat: 30.3022, lng: -81.7057},
             {company: 'Physicians Group', name: 'Jacksonville Beach', address: 'Beach Blvd, Jacksonville, FL', lat: 30.2866, lng: -81.4062},
             {company: 'Physicians Group', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
@@ -713,46 +567,33 @@
             {company: 'Physicians Group', name: 'Tampa North', address: 'N Florida Ave, Tampa, FL', lat: 28.0106, lng: -82.4572}
         ];
 
-        // State
         let activeFilters = new Set(Object.keys(companies));
         let showLabels = true;
         const markers = {};
         const markerLayers = {};
 
-        // Create markers for each company
         Object.keys(companies).forEach(company => {
             markerLayers[company] = L.layerGroup();
             markers[company] = [];
         });
 
-        // Create marker HTML
         function createMarkerHtml(loc, companyData, isCor) {
             const labelClass = isCor ? 'marker-label cor' : 'marker-label';
             const iconClass = isCor ? 'marker-icon cor' : 'marker-icon';
             const labelHtml = showLabels ? `<span class="${labelClass}">${loc.name}</span>` : '';
-            
-            return `
-                <div class="marker-container">
-                    <div class="${iconClass}" style="background:${companyData.color}">
-                        ${companyData.initials}
-                    </div>
-                    ${labelHtml}
-                </div>
-            `;
+            return `<div class="marker-container"><div class="${iconClass}" style="background:${companyData.color}">${companyData.initials}</div>${labelHtml}</div>`;
         }
 
-        // Add markers
         locations.forEach(loc => {
             const companyData = companies[loc.company];
             if (!companyData) return;
-            
             const isCor = loc.company === 'COR Medical Centers';
             
             const icon = L.divIcon({
                 className: 'marker-wrapper',
                 html: createMarkerHtml(loc, companyData, isCor),
-                iconSize: [150, 30],
-                iconAnchor: [14, 14]
+                iconSize: [140, 28],
+                iconAnchor: [13, 13]
             });
 
             const marker = L.marker([loc.lat, loc.lng], {icon: icon});
@@ -760,7 +601,7 @@
             marker._companyData = companyData;
             marker._isCor = isCor;
             
-            const popupContent = `
+            marker.bindPopup(`
                 <div class="popup-content">
                     <div class="popup-header ${isCor ? 'cor' : ''}">
                         <div class="popup-company">${isCor ? '★ ' : ''}${loc.company}</div>
@@ -770,78 +611,46 @@
                         <div class="popup-address">${loc.address}</div>
                     </div>
                 </div>
-            `;
-            marker.bindPopup(popupContent, { closeButton: false });
+            `, { closeButton: false });
             
             markerLayers[loc.company].addLayer(marker);
             markers[loc.company].push(marker);
         });
 
-        // Add all layers to map
         Object.values(markerLayers).forEach(layer => layer.addTo(map));
 
-        // Toggle labels
         function toggleLabels() {
             showLabels = !showLabels;
-            const btn = document.getElementById('labelToggle');
-            btn.textContent = showLabels ? 'Labels ON' : 'Labels OFF';
-            btn.classList.toggle('active', showLabels);
-            
-            // Rebuild all markers
+            document.getElementById('labelToggle').classList.toggle('active', showLabels);
             Object.keys(markers).forEach(company => {
                 markers[company].forEach(marker => {
-                    const loc = marker._locData;
-                    const companyData = marker._companyData;
-                    const isCor = marker._isCor;
-                    
-                    const newIcon = L.divIcon({
+                    marker.setIcon(L.divIcon({
                         className: 'marker-wrapper',
-                        html: createMarkerHtml(loc, companyData, isCor),
-                        iconSize: [150, 30],
-                        iconAnchor: [14, 14]
-                    });
-                    marker.setIcon(newIcon);
+                        html: createMarkerHtml(marker._locData, marker._companyData, marker._isCor),
+                        iconSize: [140, 28],
+                        iconAnchor: [13, 13]
+                    }));
                 });
             });
         }
 
-        // Build filter list
         function buildFilterList() {
             const filterList = document.getElementById('filter-list');
             filterList.innerHTML = '';
             
-            // COR first
             const corCount = markers['COR Medical Centers']?.length || 0;
             const corActive = activeFilters.has('COR Medical Centers');
-            filterList.innerHTML += `
-                <div class="filter-item cor ${corActive ? 'active' : 'inactive'}" onclick="toggleFilter('COR Medical Centers')">
-                    <div class="filter-color" style="background:${companies['COR Medical Centers'].color}"></div>
-                    <span class="filter-name">★ COR Medical Centers</span>
-                    <span class="filter-count">${corCount}</span>
-                </div>
-            `;
+            filterList.innerHTML += `<div class="filter-item cor ${corActive ? 'active' : 'inactive'}" onclick="toggleFilter('COR Medical Centers')"><div class="filter-color" style="background:${companies['COR Medical Centers'].color}"></div><span class="filter-name">★ COR Medical Centers</span><span class="filter-count">${corCount}</span></div>`;
             
-            // Rest sorted by count
-            const sorted = Object.keys(companies)
-                .filter(c => c !== 'COR Medical Centers')
-                .sort((a, b) => (markers[b]?.length || 0) - (markers[a]?.length || 0));
-            
-            sorted.forEach(company => {
+            Object.keys(companies).filter(c => c !== 'COR Medical Centers').sort((a, b) => (markers[b]?.length || 0) - (markers[a]?.length || 0)).forEach(company => {
                 const count = markers[company]?.length || 0;
                 const isActive = activeFilters.has(company);
-                filterList.innerHTML += `
-                    <div class="filter-item ${isActive ? 'active' : 'inactive'}" onclick="toggleFilter('${company}')">
-                        <div class="filter-color" style="background:${companies[company].color}"></div>
-                        <span class="filter-name">${company}</span>
-                        <span class="filter-count">${count}</span>
-                    </div>
-                `;
+                filterList.innerHTML += `<div class="filter-item ${isActive ? 'active' : 'inactive'}" onclick="toggleFilter('${company}')"><div class="filter-color" style="background:${companies[company].color}"></div><span class="filter-name">${company}</span><span class="filter-count">${count}</span></div>`;
             });
             
             updateStats();
         }
 
-        // Toggle filter
         function toggleFilter(company) {
             if (activeFilters.has(company)) {
                 activeFilters.delete(company);
@@ -853,38 +662,28 @@
             buildFilterList();
         }
 
-        // Show all
         function showAll() {
             Object.keys(companies).forEach(company => {
                 activeFilters.add(company);
-                if (!map.hasLayer(markerLayers[company])) {
-                    markerLayers[company].addTo(map);
-                }
+                if (!map.hasLayer(markerLayers[company])) markerLayers[company].addTo(map);
             });
             buildFilterList();
         }
 
-        // Update stats
         function updateStats() {
-            const totalLocs = locations.length;
-            const totalEntities = Object.keys(companies).length;
+            document.getElementById('total-locations').textContent = locations.length;
+            document.getElementById('total-entities').textContent = Object.keys(companies).length;
             let visible = 0;
-            activeFilters.forEach(company => {
-                visible += markers[company]?.length || 0;
-            });
-            
-            document.getElementById('total-locations').textContent = totalLocs;
-            document.getElementById('total-entities').textContent = totalEntities;
+            activeFilters.forEach(c => visible += markers[c]?.length || 0);
             document.getElementById('visible-count').textContent = visible;
         }
 
-        // Toggle panel
         function togglePanel() {
             document.getElementById('panel').classList.toggle('collapsed');
         }
 
-        // Initialize
         buildFilterList();
+        document.getElementById('labelToggle').classList.add('active');
     </script>
 </body>
 </html>
