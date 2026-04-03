@@ -1,0 +1,160 @@
+{
+  "project": "Florida Chiropractic Centers Map",
+  "created": "2026-04-03",
+  "requested_by": "Steve Kerman (COR COO) via Jon Wazar",
+  "status": "in_progress",
+  "companies": {
+    "cor_medical": {
+      "name": "COR Medical Centers",
+      "website": "cormedicalcenters.com",
+      "expected_locations": 23,
+      "is_us": true,
+      "color": "#00A19B",
+      "marker": "star",
+      "locations": []
+    },
+    "complete_care": {
+      "name": "Complete Care",
+      "website": "complete-care.com",
+      "expected_locations": 30,
+      "is_us": false,
+      "locations": []
+    },
+    "action_pt": {
+      "name": "Action Physical Therapy",
+      "website": "actionphysical.com",
+      "expected_locations": 24,
+      "is_us": false,
+      "locations": [
+        {"name": "The Villages", "address": "8564 East CR 466 Ste 303, The Villages, FL 32162"},
+        {"name": "Miami", "address": "930 SW 82nd Ave, Miami, FL 33144"},
+        {"name": "Palm Beach Gardens (Stable)", "address": "10358 Riverside Dr #140, Palm Beach Gardens, FL 33410"},
+        {"name": "Daytona Beach", "address": "369 Bill France Blvd, Daytona Beach, FL 32114"},
+        {"name": "Tampa", "address": "6912 Asphalt Ave, Tampa, FL 33614"},
+        {"name": "Winter Garden", "address": "730 S Dillard St, Winter Garden, FL 34787"},
+        {"name": "Okeechobee", "address": "3912 SE 18th Terrace, Okeechobee, FL 34974"},
+        {"name": "Fort Pierce", "address": "600 N Highway 1 Unit 606A, Fort Pierce, FL 34950"},
+        {"name": "Port St. Lucie East", "address": "1680 SE Lyngate Dr Suite 203, Port St. Lucie, FL 34952"},
+        {"name": "Port St. Lucie West", "address": "1680 SW St Lucie W Blvd Suite 202, Port St. Lucie, FL 34986"},
+        {"name": "Stuart", "address": "111 SE Osceola St #200, Stuart, FL 34994"},
+        {"name": "Palm Beach Gardens", "address": "3335 Burns Rd #200, Palm Beach Gardens, FL 33410"},
+        {"name": "Royal Palm Beach", "address": "106 Ponce De Leon St, Royal Palm Beach, FL 33411"},
+        {"name": "West Palm Beach", "address": "580 Village Blvd Suite 215, West Palm Beach, FL 33409"},
+        {"name": "Belle Glade", "address": "1100 S Main St Suite 103, Belle Glade, FL 33430"},
+        {"name": "Lake Worth", "address": "6415 Lake Worth Rd Suite 309, Greenacres, FL 33463"},
+        {"name": "Boynton Beach", "address": "4971 Le Chalet Blvd #100, Boynton Beach, FL 33436"},
+        {"name": "Delray Beach", "address": "160 Congress Park Dr Suite 101, Delray Beach, FL 33445"},
+        {"name": "Boca Raton", "address": "9325 Glades Rd #104, Boca Raton, FL 33434"},
+        {"name": "Oakland Park", "address": "3434 NE 12th Ave, Oakland Park, FL 33334"},
+        {"name": "Plantation", "address": "100 NW 82nd Ave #204, Plantation, FL 33324"},
+        {"name": "Davie", "address": "5149 S University Dr, Davie, FL 33328"},
+        {"name": "Hollywood", "address": "3900 Hollywood Blvd Suite 204, Hollywood, FL 33021"},
+        {"name": "North Miami Beach", "address": "150 NW 168th St Suite 304, North Miami Beach, FL 33169"}
+      ]
+    },
+    "path_medical": {
+      "name": "Path Medical",
+      "website": "pathmedical.com",
+      "expected_locations": 22,
+      "is_us": false,
+      "locations_cities": ["North Miami", "Fort Lauderdale", "Fort Pierce", "Palm Beach Lakes", "Pembroke Pines", "Pompano Beach", "Port St. Lucie", "Haines City", "Kissimmee", "Longwood", "Orlando East", "Orlando Central", "Hialeah", "Hollywood", "Lakeland", "St. Pete", "Tampa Central", "Tampa North", "Tampa South", "Tamarac MRI"]
+    },
+    "physicians_group": {
+      "name": "Physicians Group LLC",
+      "website": "physiciansgroupllc.com",
+      "expected_locations": 20,
+      "is_us": false,
+      "locations_cities": ["Jacksonville Normandy", "Jacksonville Beach", "Lakeland", "Tampa Himes", "Tampa North"]
+    },
+    "rejuvenx": {
+      "name": "RejuvenX",
+      "website": "rejuvenxfl.com",
+      "expected_locations": 11,
+      "is_us": false,
+      "locations_cities": ["Sarasota", "Naples", "Fort Myers", "Port Charlotte", "Tampa", "St. Petersburg", "Royal Palm Beach", "West Palm Beach"]
+    },
+    "chirocare": {
+      "name": "ChiroCare of Florida",
+      "website": "chirocareflorida.com",
+      "expected_locations": 10,
+      "is_us": false,
+      "locations_cities": ["Coral Springs", "Aventura", "Fort Lauderdale", "Pompano Beach", "Boca Raton", "Weston"]
+    },
+    "back_to_mind": {
+      "name": "Back to Mind",
+      "website": "backtomind.com",
+      "expected_locations": 9,
+      "is_us": false,
+      "locations": [
+        {"name": "Fort Lauderdale", "address": "6450 NW 5th Way, Fort Lauderdale, FL 33309"},
+        {"name": "Hollywood", "address": "3990 Sheridan St Suite 201, Hollywood, FL"},
+        {"name": "North Miami", "address": "1125 NE 125th St unit 303, North Miami, FL 33161"},
+        {"name": "Tamarac", "address": "7431 N University Dr #206, Tamarac, FL 33321"},
+        {"name": "West Palm Beach", "address": "4700 N Congress Ave Suite 202, West Palm Beach, FL 33407"},
+        {"name": "Coral Springs", "address": "2825 N University Dr, Coral Springs, FL 33065"}
+      ]
+    },
+    "total_md": {
+      "name": "Total MD",
+      "website": "thetotalmd.com",
+      "expected_locations": 7,
+      "is_us": false,
+      "locations": [
+        {"name": "Fort Lauderdale", "address": "2700 W Cypress Creek Rd Ste C100, Fort Lauderdale, FL 33309"},
+        {"name": "Boca Raton", "address": "1905 Clint Moore Rd Ste 308, Boca Raton, FL 33496"},
+        {"name": "Coral Springs", "address": "Coral Springs, FL"}
+      ]
+    },
+    "county_line": {
+      "name": "County Line Chiropractic",
+      "website": "countylinechiro.com",
+      "expected_locations": 6,
+      "is_us": false,
+      "locations_cities": ["Miami Gardens", "North Miami Beach", "Pembroke Pines", "Plantation", "Lauderhill", "Oakland Park"]
+    },
+    "fusion_chiro": {
+      "name": "Fusion Chiropractic Spa",
+      "website": "fusionchirospa.com",
+      "expected_locations": 6,
+      "is_us": false,
+      "locations": [
+        {"name": "Delray Beach", "address": "1836 S Federal Hwy, Delray Beach, FL 33483"},
+        {"name": "Boynton Beach", "address": "3717 W Boynton Beach Blvd #9, Boynton Beach, FL"},
+        {"name": "Coconut Creek", "address": "1383 Lyons Rd, Coconut Creek, FL"}
+      ]
+    },
+    "goldson_spine": {
+      "name": "Goldson Spine Rehabilitation",
+      "website": "goldsonspine.com",
+      "expected_locations": 5,
+      "is_us": false,
+      "locations": [
+        {"name": "North Lauderdale", "address": "1335 South State Road 7, North Lauderdale, FL 33068"},
+        {"name": "Plantation", "address": "734 N State Rd 7, Plantation, FL 33317"},
+        {"name": "Pembroke Pines", "address": "10796 Pines Blvd #101, Pembroke Pines, FL 33026"},
+        {"name": "Aventura", "address": "Aventura, FL"},
+        {"name": "Port St. Lucie", "address": "Port St. Lucie, FL"}
+      ]
+    }
+  },
+  "unmatched": {
+    "alpha": {
+      "listed_as": "alpha",
+      "expected_locations": 21,
+      "found": "alphacare.biz (only 3 locations)",
+      "status": "needs_clarification"
+    },
+    "chiro_clinics_south_fl": {
+      "listed_as": "chiro clinics of south fl",
+      "expected_locations": 8,
+      "found": null,
+      "status": "not_found"
+    },
+    "multicare": {
+      "listed_as": "multi care",
+      "expected_locations": 5,
+      "found": null,
+      "status": "not_found"
+    }
+  }
+}

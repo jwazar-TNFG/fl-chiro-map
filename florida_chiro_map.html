@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florida Chiropractic Centers Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #map { height: 100vh; width: 100%; }
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .legend h3 {
+            margin-bottom: 10px;
+            color: #1a365d;
+            border-bottom: 2px solid #00A19B;
+            padding-bottom: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .legend-item.cor {
+            font-weight: bold;
+            background: #e6f7f7;
+            padding: 5px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .legend-item.cor .legend-color {
+            background: #00A19B;
+            border: 3px solid gold;
+        }
+        .cor-marker {
+            background: #00A19B;
+            border: 3px solid gold;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .cor-marker::after {
+            content: "★";
+            color: white;
+            font-size: 14px;
+        }
+        .info-header {
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin: -10px -10px 10px -10px;
+        }
+        .info-header.cor {
+            background: linear-gradient(135deg, #00A19B 0%, #00c4b4 100%);
+            border: 2px solid gold;
+        }
+        .popup-content {
+            min-width: 200px;
+        }
+        .popup-address {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Initialize map centered on Florida
+        const map = L.map('map').setView([27.6648, -81.5158], 7);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Company colors
+        const colors = {
+            'COR Medical Centers': '#00A19B',
+            'Complete Care': '#e74c3c',
+            'Action Physical Therapy': '#9b59b6',
+            'Path Medical': '#3498db',
+            'Physicians Group': '#e67e22',
+            'RejuvenX': '#1abc9c',
+            'ChiroCare of Florida': '#f39c12',
+            'Back to Mind': '#8e44ad',
+            'Total MD': '#c0392b',
+            'County Line Chiropractic': '#16a085',
+            'Fusion Chiropractic Spa': '#d35400',
+            'Goldson Spine': '#2980b9'
+        };
+
+        // Location data (geocoded)
+        const locations = [
+            // COR Medical Centers (★ marker)
+            {company: 'COR Medical Centers', name: 'Orlando', address: '1320 N Semoran Blvd, Orlando, FL', lat: 28.5584, lng: -81.3057, isUs: true},
+            {company: 'COR Medical Centers', name: 'North Miami', address: '12550 Biscayne Blvd Ste 907, North Miami, FL', lat: 25.8903, lng: -80.1625, isUs: true},
+            {company: 'COR Medical Centers', name: 'Miami (Kendall)', address: '13501 SW 128th St, Miami, FL', lat: 25.6437, lng: -80.4089, isUs: true},
+            {company: 'COR Medical Centers', name: 'Doral', address: '4001 NW 97th Ave, Doral, FL', lat: 25.8195, lng: -80.3570, isUs: true},
+            {company: 'COR Medical Centers', name: 'Coral Way', address: '1333 Coral Way Ste 200, Miami, FL', lat: 25.7510, lng: -80.2148, isUs: true},
+            {company: 'COR Medical Centers', name: 'Hollywood', address: '3107 Stirling Rd, Hollywood, FL', lat: 26.0217, lng: -80.1831, isUs: true},
+            {company: 'COR Medical Centers', name: 'Homestead', address: '15600 SW 288th St Ste 403, Homestead, FL', lat: 25.4687, lng: -80.4557, isUs: true},
+            {company: 'COR Medical Centers', name: 'Hialeah', address: '1275 W 47th Pl Ste 301, Hialeah, FL', lat: 25.8706, lng: -80.3104, isUs: true},
+            {company: 'COR Medical Centers', name: 'Miami Gardens', address: '111 NW 183rd St #200, Miami, FL', lat: 25.9387, lng: -80.2045, isUs: true},
+            {company: 'COR Medical Centers', name: 'Jacksonville', address: 'Jacksonville, FL', lat: 30.3322, lng: -81.6557, isUs: true},
+            {company: 'COR Medical Centers', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572, isUs: true},
+            {company: 'COR Medical Centers', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948, isUs: true},
+            {company: 'COR Medical Centers', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723, isUs: true},
+
+            // Action Physical Therapy
+            {company: 'Action Physical Therapy', name: 'The Villages', address: '8564 East CR 466 Ste 303, The Villages, FL', lat: 28.9001, lng: -81.9437},
+            {company: 'Action Physical Therapy', name: 'Miami', address: '930 SW 82nd Ave, Miami, FL', lat: 25.7617, lng: -80.3128},
+            {company: 'Action Physical Therapy', name: 'Palm Beach Gardens', address: '10358 Riverside Dr #140, Palm Beach Gardens, FL', lat: 26.8234, lng: -80.0917},
+            {company: 'Action Physical Therapy', name: 'Tampa', address: '6912 Asphalt Ave, Tampa, FL', lat: 27.9945, lng: -82.5197},
+            {company: 'Action Physical Therapy', name: 'Winter Garden', address: '730 S Dillard St, Winter Garden, FL', lat: 28.5553, lng: -81.5861},
+            {company: 'Action Physical Therapy', name: 'Okeechobee', address: '3912 SE 18th Terrace, Okeechobee, FL', lat: 27.2253, lng: -80.8126},
+            {company: 'Action Physical Therapy', name: 'Fort Pierce', address: '600 N Highway 1 Unit 606A, Fort Pierce, FL', lat: 27.4467, lng: -80.3256},
+            {company: 'Action Physical Therapy', name: 'Stuart', address: '111 SE Osceola St #200, Stuart, FL', lat: 27.1976, lng: -80.2528},
+            {company: 'Action Physical Therapy', name: 'Royal Palm Beach', address: '106 Ponce De Leon St, Royal Palm Beach, FL', lat: 26.7081, lng: -80.2304},
+            {company: 'Action Physical Therapy', name: 'West Palm Beach', address: '580 Village Blvd Suite 215, West Palm Beach, FL', lat: 26.7153, lng: -80.0664},
+            {company: 'Action Physical Therapy', name: 'Boynton Beach', address: '4971 Le Chalet Blvd #100, Boynton Beach, FL', lat: 26.5317, lng: -80.0867},
+            {company: 'Action Physical Therapy', name: 'Delray Beach', address: '160 Congress Park Dr Suite 101, Delray Beach, FL', lat: 26.4615, lng: -80.1053},
+            {company: 'Action Physical Therapy', name: 'Boca Raton', address: '9325 Glades Rd #104, Boca Raton, FL', lat: 26.3683, lng: -80.1531},
+            {company: 'Action Physical Therapy', name: 'Oakland Park', address: '3434 NE 12th Ave, Oakland Park, FL', lat: 26.1687, lng: -80.1179},
+            {company: 'Action Physical Therapy', name: 'Plantation', address: '100 NW 82nd Ave #204, Plantation, FL', lat: 26.1225, lng: -80.2563},
+            {company: 'Action Physical Therapy', name: 'Davie', address: '5149 S University Dr, Davie, FL', lat: 26.0650, lng: -80.2378},
+            {company: 'Action Physical Therapy', name: 'Hollywood', address: '3900 Hollywood Blvd Suite 204, Hollywood, FL', lat: 26.0112, lng: -80.1695},
+            {company: 'Action Physical Therapy', name: 'North Miami Beach', address: '150 NW 168th St Suite 304, North Miami Beach, FL', lat: 25.9303, lng: -80.1973},
+
+            // Complete Care (Central Florida focus)
+            {company: 'Complete Care', name: 'Orlando (Forest City)', address: '7984 Forest City Rd Ste 106, Orlando, FL', lat: 28.6063, lng: -81.4268},
+            {company: 'Complete Care', name: 'Orlando (Town Center)', address: '4118 Town Center Blvd, Orlando, FL', lat: 28.3826, lng: -81.4096},
+            {company: 'Complete Care', name: 'Orlando (Colonial)', address: '2206 E Colonial Dr, Orlando, FL', lat: 28.5538, lng: -81.3517},
+            {company: 'Complete Care', name: 'Waterford Lakes', address: '12780 Waterford Lakes Pkwy, Orlando, FL', lat: 28.5467, lng: -81.2108},
+            {company: 'Complete Care', name: 'Casselberry', address: '1008 State Road 436, Casselberry, FL', lat: 28.6615, lng: -81.3287},
+            {company: 'Complete Care', name: 'Melbourne', address: '1515 Elizabeth St Ste E, Melbourne, FL', lat: 28.0836, lng: -80.6081},
+            {company: 'Complete Care', name: 'Oviedo', address: 'Oviedo, FL', lat: 28.6700, lng: -81.2081},
+            {company: 'Complete Care', name: 'Maitland', address: 'Maitland, FL', lat: 28.6275, lng: -81.3631},
+            {company: 'Complete Care', name: 'DeBary', address: 'DeBary, FL', lat: 28.8833, lng: -81.3086},
+            {company: 'Complete Care', name: 'Lady Lake', address: 'Lady Lake, FL', lat: 28.9178, lng: -81.9359},
+            {company: 'Complete Care', name: "Hunter's Creek", address: "Hunter's Creek, FL", lat: 28.3560, lng: -81.4220},
+            {company: 'Complete Care', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
+            {company: 'Complete Care', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
+
+            // Path Medical
+            {company: 'Path Medical', name: 'Fort Lauderdale', address: '2304 W Oakland Park Blvd, Fort Lauderdale, FL', lat: 26.1668, lng: -80.1542},
+            {company: 'Path Medical', name: 'North Miami', address: '18999 Biscayne Blvd, Miami, FL', lat: 25.9553, lng: -80.1420},
+            {company: 'Path Medical', name: 'Hollywood', address: 'Hollywood, FL', lat: 26.0112, lng: -80.1495},
+            {company: 'Path Medical', name: 'Pembroke Pines', address: 'Pembroke Pines, FL', lat: 26.0128, lng: -80.2962},
+            {company: 'Path Medical', name: 'Pompano Beach', address: 'Pompano Beach, FL', lat: 26.2379, lng: -80.1248},
+            {company: 'Path Medical', name: 'Hialeah', address: 'Hialeah, FL', lat: 25.8576, lng: -80.2781},
+            {company: 'Path Medical', name: 'Orlando East', address: 'Orlando, FL', lat: 28.5383, lng: -81.3092},
+            {company: 'Path Medical', name: 'Orlando Central', address: 'Orlando, FL', lat: 28.5383, lng: -81.3792},
+            {company: 'Path Medical', name: 'Tampa Central', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
+            {company: 'Path Medical', name: 'Kissimmee', address: 'Kissimmee, FL', lat: 28.2920, lng: -81.4076},
+            {company: 'Path Medical', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
+            {company: 'Path Medical', name: 'St. Petersburg', address: 'St. Petersburg, FL', lat: 27.7676, lng: -82.6403},
+
+            // ChiroCare of Florida
+            {company: 'ChiroCare of Florida', name: 'Coral Springs', address: 'W Sample Rd, Coral Springs, FL', lat: 26.2712, lng: -80.2706},
+            {company: 'ChiroCare of Florida', name: 'Aventura', address: 'Aventura, FL', lat: 25.9565, lng: -80.1392},
+            {company: 'ChiroCare of Florida', name: 'Fort Lauderdale', address: 'Fort Lauderdale, FL', lat: 26.1224, lng: -80.1373},
+            {company: 'ChiroCare of Florida', name: 'Pompano Beach', address: '1301 E Atlantic Blvd Ste 2, Pompano Beach, FL', lat: 26.2379, lng: -80.1048},
+            {company: 'ChiroCare of Florida', name: 'Boca Raton', address: '9325 Glades Rd Ste 108, Boca Raton, FL', lat: 26.3683, lng: -80.1531},
+            {company: 'ChiroCare of Florida', name: 'Weston', address: '4470 Weston Rd, Fort Lauderdale, FL', lat: 26.1003, lng: -80.3997},
+
+            // Back to Mind
+            {company: 'Back to Mind', name: 'Fort Lauderdale', address: '6450 NW 5th Way, Fort Lauderdale, FL', lat: 26.1943, lng: -80.1787},
+            {company: 'Back to Mind', name: 'Hollywood', address: '3990 Sheridan St Suite 201, Hollywood, FL', lat: 26.0217, lng: -80.2031},
+            {company: 'Back to Mind', name: 'North Miami', address: '1125 NE 125th St unit 303, North Miami, FL', lat: 25.8903, lng: -80.1825},
+            {company: 'Back to Mind', name: 'Tamarac', address: '7431 N University Dr #206, Tamarac, FL', lat: 26.2128, lng: -80.2506},
+            {company: 'Back to Mind', name: 'West Palm Beach', address: '4700 N Congress Ave Suite 202, West Palm Beach, FL', lat: 26.7553, lng: -80.0864},
+            {company: 'Back to Mind', name: 'Coral Springs', address: '2825 N University Dr, Coral Springs, FL', lat: 26.2712, lng: -80.2506},
+
+            // RejuvenX
+            {company: 'RejuvenX', name: 'Sarasota', address: 'Sarasota, FL', lat: 27.3364, lng: -82.5307},
+            {company: 'RejuvenX', name: 'Naples', address: 'Naples, FL', lat: 26.1420, lng: -81.7948},
+            {company: 'RejuvenX', name: 'Fort Myers', address: 'Fort Myers, FL', lat: 26.6406, lng: -81.8723},
+            {company: 'RejuvenX', name: 'Port Charlotte', address: 'Port Charlotte, FL', lat: 26.9756, lng: -82.0906},
+            {company: 'RejuvenX', name: 'Tampa', address: 'Tampa, FL', lat: 27.9506, lng: -82.4572},
+            {company: 'RejuvenX', name: 'Royal Palm Beach', address: 'Royal Palm Beach, FL', lat: 26.7081, lng: -80.2304},
+
+            // County Line Chiropractic
+            {company: 'County Line Chiropractic', name: 'Miami Gardens', address: 'Miami Gardens, FL', lat: 25.9420, lng: -80.2456},
+            {company: 'County Line Chiropractic', name: 'North Miami Beach', address: '1857 NE Miami Gardens Dr, North Miami Beach, FL', lat: 25.9333, lng: -80.1673},
+            {company: 'County Line Chiropractic', name: 'Pembroke Pines', address: 'Pembroke Pines, FL', lat: 26.0128, lng: -80.2962},
+            {company: 'County Line Chiropractic', name: 'Plantation', address: '199 N State Road 7, Plantation, FL', lat: 26.1225, lng: -80.2563},
+            {company: 'County Line Chiropractic', name: 'Lauderhill', address: 'Commercial & University, Lauderhill, FL', lat: 26.1661, lng: -80.2134},
+            {company: 'County Line Chiropractic', name: 'Oakland Park', address: '926 E Cypress Creek Rd, Fort Lauderdale, FL', lat: 26.1887, lng: -80.1279},
+
+            // Total MD
+            {company: 'Total MD', name: 'Fort Lauderdale', address: '2700 W Cypress Creek Rd Ste C100, Fort Lauderdale, FL', lat: 26.1868, lng: -80.1687},
+            {company: 'Total MD', name: 'Boca Raton', address: '1905 Clint Moore Rd Ste 308, Boca Raton, FL', lat: 26.4015, lng: -80.1031},
+            {company: 'Total MD', name: 'Coral Springs', address: 'Coral Springs, FL', lat: 26.2712, lng: -80.2706},
+
+            // Fusion Chiropractic Spa
+            {company: 'Fusion Chiropractic Spa', name: 'Delray Beach', address: '1836 S Federal Hwy, Delray Beach, FL', lat: 26.4515, lng: -80.0706},
+            {company: 'Fusion Chiropractic Spa', name: 'Boynton Beach', address: '3717 W Boynton Beach Blvd #9, Boynton Beach, FL', lat: 26.5217, lng: -80.1167},
+            {company: 'Fusion Chiropractic Spa', name: 'Coconut Creek', address: '1383 Lyons Rd, Coconut Creek, FL', lat: 26.2778, lng: -80.1892},
+
+            // Goldson Spine
+            {company: 'Goldson Spine', name: 'North Lauderdale', address: '1335 South State Road 7, North Lauderdale, FL', lat: 26.2178, lng: -80.2234},
+            {company: 'Goldson Spine', name: 'Plantation', address: '734 N State Rd 7, Plantation, FL', lat: 26.1325, lng: -80.2563},
+            {company: 'Goldson Spine', name: 'Pembroke Pines', address: '10796 Pines Blvd #101, Pembroke Pines, FL', lat: 26.0128, lng: -80.3362},
+            {company: 'Goldson Spine', name: 'Aventura', address: 'Aventura, FL', lat: 25.9565, lng: -80.1392},
+
+            // Physicians Group
+            {company: 'Physicians Group', name: 'Jacksonville Normandy', address: 'Jacksonville, FL', lat: 30.3022, lng: -81.7057},
+            {company: 'Physicians Group', name: 'Jacksonville Beach', address: 'Beach Blvd, Jacksonville, FL', lat: 30.2866, lng: -81.4062},
+            {company: 'Physicians Group', name: 'Lakeland', address: 'Lakeland, FL', lat: 28.0395, lng: -81.9498},
+            {company: 'Physicians Group', name: 'Tampa Himes', address: 'Tampa, FL', lat: 27.9706, lng: -82.4772},
+            {company: 'Physicians Group', name: 'Tampa North', address: 'N Florida Ave, Tampa, FL', lat: 28.0106, lng: -82.4572}
+        ];
+
+        // Create marker clusters for each company
+        const clusters = {};
+        const layerGroups = {};
+
+        Object.keys(colors).forEach(company => {
+            clusters[company] = L.markerClusterGroup({
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    return L.divIcon({
+                        html: '<div style="background:' + colors[company] + ';color:white;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);">' + count + '</div>',
+                        className: 'marker-cluster',
+                        iconSize: [40, 40]
+                    });
+                }
+            });
+        });
+
+        // Add markers
+        locations.forEach(loc => {
+            const color = colors[loc.company] || '#666';
+            const isCor = loc.company === 'COR Medical Centers';
+            
+            let icon;
+            if (isCor) {
+                icon = L.divIcon({
+                    className: 'cor-marker-wrapper',
+                    html: '<div class="cor-marker"></div>',
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+            } else {
+                icon = L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background:' + color + ';border-radius:50%;width:16px;height:16px;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);"></div>',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+            }
+
+            const marker = L.marker([loc.lat, loc.lng], {icon: icon});
+            
+            const popupContent = `
+                <div class="popup-content">
+                    <div class="info-header ${isCor ? 'cor' : ''}">
+                        ${isCor ? '★ ' : ''}${loc.company}
+                    </div>
+                    <strong>${loc.name}</strong>
+                    <div class="popup-address">${loc.address}</div>
+                </div>
+            `;
+            marker.bindPopup(popupContent);
+            
+            if (clusters[loc.company]) {
+                clusters[loc.company].addLayer(marker);
+            }
+        });
+
+        // Add all clusters to map
+        Object.values(clusters).forEach(cluster => {
+            map.addLayer(cluster);
+        });
+
+        // Add legend
+        const legend = L.control({position: 'topright'});
+        legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<h3>Florida Chiropractic Centers</h3>';
+            
+            // COR first with special styling
+            div.innerHTML += `
+                <div class="legend-item cor">
+                    <div class="legend-color"></div>
+                    <span>★ COR Medical Centers (Us)</span>
+                </div>
+            `;
+            
+            // Other companies
+            Object.keys(colors).forEach(company => {
+                if (company !== 'COR Medical Centers') {
+                    const count = locations.filter(l => l.company === company).length;
+                    div.innerHTML += `
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:${colors[company]}"></div>
+                            <span>${company} (${count})</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html>
