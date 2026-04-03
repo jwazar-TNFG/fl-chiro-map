@@ -15,6 +15,9 @@ const companies = {
     'County Line Chiropractic': { color: '#10b981', initials: 'CLC' },
     'Fusion Chiropractic Spa': { color: '#ea580c', initials: 'FCS' },
     'Goldson Spine': { color: '#2563eb', initials: 'GS' },
+    'Grappin Clinic': { color: '#0891b2', initials: 'GC' },
+    'Specific Care Chiro': { color: '#7c3aed', initials: 'SCC' },
+    'First Choice Medical': { color: '#be185d', initials: 'FCM' },
     'Chiro Clinics of South FL': { color: '#06b6d4', initials: 'CCSF' },
     'Spine & Wellness Centers': { color: '#ec4899', initials: 'SWC' },
     'Icon Medical Centers': { color: '#84cc16', initials: 'IMC' },
@@ -287,7 +290,31 @@ const locations = [
     {company: 'Goldson Spine', name: 'Plantation', address: '734 N State Rd 7, Plantation, FL 33317', lat: 26.1325, lng: -80.2563},
     {company: 'Goldson Spine', name: 'Pembroke Pines', address: '10796 Pines Blvd #101, Pembroke Pines, FL 33026', lat: 26.0128, lng: -80.3362},
     {company: 'Goldson Spine', name: 'Aventura', address: 'Aventura, FL 33180', lat: 25.9565, lng: -80.1392},
-    {company: 'Goldson Spine', name: 'Port St. Lucie', address: 'Port St. Lucie, FL 34952', lat: 27.2553, lng: -80.3256}
+    {company: 'Goldson Spine', name: 'Port St. Lucie', address: 'Port St. Lucie, FL 34952', lat: 27.2553, lng: -80.3256},
+
+    // ============================================
+    // Grappin Clinic - 6 locations (NEW)
+    // ============================================
+    {company: 'Grappin Clinic', name: 'North Port', address: '12511 S Tamiami Trail, North Port, FL 34287', lat: 27.0156, lng: -82.2206},
+    {company: 'Grappin Clinic', name: 'Bradenton', address: '408 Manatee Ave E, Bradenton, FL 34205', lat: 27.4989, lng: -82.5648},
+    {company: 'Grappin Clinic', name: 'Port Charlotte', address: 'Port Charlotte, FL 33952', lat: 26.9756, lng: -82.0906},
+    {company: 'Grappin Clinic', name: 'Venice', address: 'Venice, FL 34285', lat: 27.0998, lng: -82.4543},
+    {company: 'Grappin Clinic', name: 'Riverview/Tampa', address: 'Riverview, FL 33578', lat: 27.8661, lng: -82.3265},
+    {company: 'Grappin Clinic', name: 'Arcadia', address: 'Arcadia, FL 34266', lat: 27.2156, lng: -81.8584},
+
+    // ============================================
+    // Specific Care Chiropractic - 4 locations (NEW)
+    // ============================================
+    {company: 'Specific Care Chiro', name: 'Fort Myers', address: '3949 Evans Ave, Fort Myers, FL 33901', lat: 26.6306, lng: -81.8623},
+    {company: 'Specific Care Chiro', name: 'Lehigh Acres', address: '403 Joan Ave N, Lehigh Acres, FL 33971', lat: 26.6256, lng: -81.6248},
+    {company: 'Specific Care Chiro', name: 'Cape Coral', address: '461 Del Prado Blvd S, Ste C, Cape Coral, FL 33990', lat: 26.6028, lng: -81.9495},
+    {company: 'Specific Care Chiro', name: 'Coral Springs', address: '1700 N University Dr, Ste 301, Coral Springs, FL 33071', lat: 26.2812, lng: -80.2506},
+
+    // ============================================
+    // First Choice Medical - 2 locations (NEW)
+    // ============================================
+    {company: 'First Choice Medical', name: 'Melbourne', address: '709 S Harbor City Blvd, Ste 100, Melbourne, FL 32901', lat: 28.0836, lng: -80.6181},
+    {company: 'First Choice Medical', name: 'Viera', address: 'Viera, FL 32940', lat: 28.2539, lng: -80.7320}
 ];
 
 // Export for use
