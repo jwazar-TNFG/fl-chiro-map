@@ -18,6 +18,8 @@ const companies = {
     'Grappin Clinic': { color: '#0891b2', initials: 'GC' },
     'Specific Care Chiro': { color: '#7c3aed', initials: 'SCC' },
     'First Choice Medical': { color: '#be185d', initials: 'FCM' },
+    'Alpha Medicine Rehab': { color: '#dc2626', initials: 'AMR' },
+    'Multi-Care Medical': { color: '#059669', initials: 'MCM' },
     'Chiro Clinics of South FL': { color: '#06b6d4', initials: 'CCSF' },
     'Spine & Wellness Centers': { color: '#ec4899', initials: 'SWC' },
     'Icon Medical Centers': { color: '#84cc16', initials: 'IMC' },
@@ -314,7 +316,41 @@ const locations = [
     // First Choice Medical - 2 locations (NEW)
     // ============================================
     {company: 'First Choice Medical', name: 'Melbourne', address: '709 S Harbor City Blvd, Ste 100, Melbourne, FL 32901', lat: 28.0836, lng: -80.6181},
-    {company: 'First Choice Medical', name: 'Viera', address: 'Viera, FL 32940', lat: 28.2539, lng: -80.7320}
+    {company: 'First Choice Medical', name: 'Viera', address: 'Viera, FL 32940', lat: 28.2539, lng: -80.7320},
+
+    // ============================================
+    // Alpha Medicine & Rehab - 21 locations (FOUND!)
+    // ============================================
+    {company: 'Alpha Medicine Rehab', name: 'Naples', address: '801 Anchor Rode Dr, Ste 201, Naples, FL 34103', lat: 26.1820, lng: -81.7948},
+    {company: 'Alpha Medicine Rehab', name: 'Fort Myers', address: '2915 Colonial Blvd, Ste 220, Fort Myers, FL 33966', lat: 26.6206, lng: -81.8423},
+    {company: 'Alpha Medicine Rehab', name: 'Arcadia', address: '11 N 10th Ave, Arcadia, FL 34266', lat: 27.2156, lng: -81.8584},
+    {company: 'Alpha Medicine Rehab', name: 'Lehigh Acres', address: 'Lehigh Acres, FL 33971', lat: 26.6256, lng: -81.6248},
+    {company: 'Alpha Medicine Rehab', name: 'LaBelle', address: 'LaBelle, FL 33935', lat: 26.7617, lng: -81.4384},
+    {company: 'Alpha Medicine Rehab', name: 'Cape Coral', address: 'Cape Coral, FL 33904', lat: 26.5628, lng: -81.9495},
+    {company: 'Alpha Medicine Rehab', name: 'Port Charlotte', address: 'Port Charlotte, FL 33952', lat: 26.9756, lng: -82.0906},
+    {company: 'Alpha Medicine Rehab', name: 'Punta Gorda', address: 'Punta Gorda, FL 33950', lat: 26.9298, lng: -82.0454},
+    {company: 'Alpha Medicine Rehab', name: 'Venice', address: 'Venice, FL 34285', lat: 27.0998, lng: -82.4543},
+    {company: 'Alpha Medicine Rehab', name: 'Sarasota', address: 'Sarasota, FL 34231', lat: 27.3364, lng: -82.5307},
+    {company: 'Alpha Medicine Rehab', name: 'Sebring', address: 'Sebring, FL 33870', lat: 27.4956, lng: -81.4409},
+    {company: 'Alpha Medicine Rehab', name: 'Kissimmee', address: 'Kissimmee, FL 34741', lat: 28.2920, lng: -81.4076},
+    {company: 'Alpha Medicine Rehab', name: 'Orlando', address: 'Orlando, FL 32801', lat: 28.5483, lng: -81.3792},
+    {company: 'Alpha Medicine Rehab', name: 'Tampa', address: 'Tampa, FL 33607', lat: 27.9606, lng: -82.4672},
+    {company: 'Alpha Medicine Rehab', name: 'Port St. Lucie', address: 'Port St. Lucie, FL 34986', lat: 27.2953, lng: -80.3856},
+    {company: 'Alpha Medicine Rehab', name: 'Pembroke Pines', address: 'Pembroke Pines, FL 33024', lat: 26.0128, lng: -80.2962},
+    {company: 'Alpha Medicine Rehab', name: 'Miami', address: 'Miami, FL 33130', lat: 25.7717, lng: -80.1978},
+    {company: 'Alpha Medicine Rehab', name: 'South Miami', address: 'South Miami, FL 33143', lat: 25.7076, lng: -80.2934},
+    {company: 'Alpha Medicine Rehab', name: 'Key West', address: 'Key West, FL 33040', lat: 24.5551, lng: -81.7800},
+    {company: 'Alpha Medicine Rehab', name: 'West Palm Beach', address: 'West Palm Beach, FL 33401', lat: 26.7153, lng: -80.0534},
+    {company: 'Alpha Medicine Rehab', name: 'Clermont', address: 'Clermont, FL 34711', lat: 28.5494, lng: -81.7729},
+
+    // ============================================
+    // Multi-Care Medical - 5 locations (FOUND!)
+    // ============================================
+    {company: 'Multi-Care Medical', name: 'Pembroke Pines', address: '11270 Pines Blvd, Pembroke Pines, FL 33026', lat: 26.0128, lng: -80.3362},
+    {company: 'Multi-Care Medical', name: 'Fort Myers', address: '13701 Cypress Terrace Ct, Fort Myers, FL 33907', lat: 26.5806, lng: -81.8723},
+    {company: 'Multi-Care Medical', name: 'Naples', address: 'Naples, FL 34102', lat: 26.1420, lng: -81.7948},
+    {company: 'Multi-Care Medical', name: 'Cape Coral', address: '1425 Viscaya Pkwy, Ste 203, Cape Coral, FL 33990', lat: 26.6028, lng: -81.9395},
+    {company: 'Multi-Care Medical', name: 'Bonita Springs', address: 'Bonita Springs, FL 34135', lat: 26.3398, lng: -81.7787}
 ];
 
 // Export for use
