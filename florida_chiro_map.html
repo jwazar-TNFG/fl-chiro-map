@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Florida Medical Centers | Intelligence View</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -309,24 +307,51 @@
             text-align: center;
         }
         
-        /* Custom Markers */
-        .cor-marker {
-            background: var(--cor-navy);
-            border: 3px solid var(--accent-gold);
-            border-radius: 50%;
+        /* Custom Markers with Labels */
+        .marker-container {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .marker-icon {
             width: 28px;
             height: 28px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5), 0 2px 8px rgba(0,0,0,0.5);
+            font-size: 10px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 2px solid white;
+            flex-shrink: 0;
         }
         
-        .cor-marker::after {
-            content: "★";
-            color: var(--accent-gold);
-            font-size: 14px;
-            text-shadow: 0 0 4px rgba(0,0,0,0.5);
+        .marker-icon.cor {
+            border-color: #f59e0b;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5), 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .marker-label {
+            margin-left: 6px;
+            padding: 3px 8px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #1a1a1a;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .marker-label.cor {
+            background: linear-gradient(90deg, #1e3a5f 0%, #2d4a6f 100%);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
         }
         
         /* Popups */
@@ -422,6 +447,36 @@
             border-color: var(--accent-blue);
         }
         
+        /* Label Toggle */
+        .label-toggle {
+            position: fixed;
+            bottom: 120px;
+            right: 24px;
+            z-index: 1000;
+        }
+        
+        .label-toggle button {
+            padding: 8px 12px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .label-toggle button:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+        
+        .label-toggle button.active {
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+            border-color: var(--accent-blue);
+        }
+        
         /* Mobile */
         @media (max-width: 640px) {
             .panel {
@@ -442,6 +497,16 @@
                 bottom: auto;
                 top: 16px;
                 right: 16px;
+            }
+            
+            .label-toggle {
+                bottom: auto;
+                top: 120px;
+                right: 16px;
+            }
+            
+            .marker-label {
+                display: none;
             }
         }
     </style>
@@ -488,39 +553,42 @@
         </div>
     </div>
     
+    <div class="label-toggle">
+        <button id="labelToggle" class="active" onclick="toggleLabels()">Labels ON</button>
+    </div>
+    
     <div class="zoom-controls">
         <button class="zoom-btn" onclick="map.zoomIn()">+</button>
         <button class="zoom-btn" onclick="map.zoomOut()">−</button>
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script>
         // Initialize map
         const map = L.map('map', {
             zoomControl: false
         }).setView([27.6648, -81.5158], 7);
         
-        // READABLE map tiles - Stadia with roads, labels, boundaries visible
+        // Readable map tiles
         L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
             attribution: '© Stadia Maps © OpenStreetMap',
             maxZoom: 20
         }).addTo(map);
 
-        // Company data - COR in navy blue
+        // Company data with initials
         const companies = {
-            'COR Medical Centers': { color: '#1e3a5f', isUs: true },
-            'Complete Care': { color: '#ef4444' },
-            'Action Physical Therapy': { color: '#a855f7' },
-            'Path Medical': { color: '#3b82f6' },
-            'Physicians Group': { color: '#f97316' },
-            'RejuvenX': { color: '#14b8a6' },
-            'ChiroCare of Florida': { color: '#eab308' },
-            'Back to Mind': { color: '#8b5cf6' },
-            'Total MD': { color: '#dc2626' },
-            'County Line Chiropractic': { color: '#10b981' },
-            'Fusion Chiropractic Spa': { color: '#ea580c' },
-            'Goldson Spine': { color: '#2563eb' }
+            'COR Medical Centers': { color: '#1e3a5f', initials: 'COR', isUs: true },
+            'Complete Care': { color: '#ef4444', initials: 'CC' },
+            'Action Physical Therapy': { color: '#a855f7', initials: 'APT' },
+            'Path Medical': { color: '#3b82f6', initials: 'PM' },
+            'Physicians Group': { color: '#f97316', initials: 'PG' },
+            'RejuvenX': { color: '#14b8a6', initials: 'RX' },
+            'ChiroCare of Florida': { color: '#eab308', initials: 'CCF' },
+            'Back to Mind': { color: '#8b5cf6', initials: 'BTM' },
+            'Total MD': { color: '#dc2626', initials: 'TMD' },
+            'County Line Chiropractic': { color: '#10b981', initials: 'CLC' },
+            'Fusion Chiropractic Spa': { color: '#ea580c', initials: 'FCS' },
+            'Goldson Spine': { color: '#2563eb', initials: 'GS' }
         };
 
         // Location data
@@ -647,6 +715,7 @@
 
         // State
         let activeFilters = new Set(Object.keys(companies));
+        let showLabels = true;
         const markers = {};
         const markerLayers = {};
 
@@ -656,6 +725,22 @@
             markers[company] = [];
         });
 
+        // Create marker HTML
+        function createMarkerHtml(loc, companyData, isCor) {
+            const labelClass = isCor ? 'marker-label cor' : 'marker-label';
+            const iconClass = isCor ? 'marker-icon cor' : 'marker-icon';
+            const labelHtml = showLabels ? `<span class="${labelClass}">${loc.name}</span>` : '';
+            
+            return `
+                <div class="marker-container">
+                    <div class="${iconClass}" style="background:${companyData.color}">
+                        ${companyData.initials}
+                    </div>
+                    ${labelHtml}
+                </div>
+            `;
+        }
+
         // Add markers
         locations.forEach(loc => {
             const companyData = companies[loc.company];
@@ -663,24 +748,17 @@
             
             const isCor = loc.company === 'COR Medical Centers';
             
-            let icon;
-            if (isCor) {
-                icon = L.divIcon({
-                    className: 'cor-marker-wrapper',
-                    html: '<div class="cor-marker"></div>',
-                    iconSize: [28, 28],
-                    iconAnchor: [14, 14]
-                });
-            } else {
-                icon = L.divIcon({
-                    className: 'custom-marker',
-                    html: `<div style="background:${companyData.color};border-radius:50%;width:16px;height:16px;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>`,
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8]
-                });
-            }
+            const icon = L.divIcon({
+                className: 'marker-wrapper',
+                html: createMarkerHtml(loc, companyData, isCor),
+                iconSize: [150, 30],
+                iconAnchor: [14, 14]
+            });
 
             const marker = L.marker([loc.lat, loc.lng], {icon: icon});
+            marker._locData = loc;
+            marker._companyData = companyData;
+            marker._isCor = isCor;
             
             const popupContent = `
                 <div class="popup-content">
@@ -701,6 +779,31 @@
 
         // Add all layers to map
         Object.values(markerLayers).forEach(layer => layer.addTo(map));
+
+        // Toggle labels
+        function toggleLabels() {
+            showLabels = !showLabels;
+            const btn = document.getElementById('labelToggle');
+            btn.textContent = showLabels ? 'Labels ON' : 'Labels OFF';
+            btn.classList.toggle('active', showLabels);
+            
+            // Rebuild all markers
+            Object.keys(markers).forEach(company => {
+                markers[company].forEach(marker => {
+                    const loc = marker._locData;
+                    const companyData = marker._companyData;
+                    const isCor = marker._isCor;
+                    
+                    const newIcon = L.divIcon({
+                        className: 'marker-wrapper',
+                        html: createMarkerHtml(loc, companyData, isCor),
+                        iconSize: [150, 30],
+                        iconAnchor: [14, 14]
+                    });
+                    marker.setIcon(newIcon);
+                });
+            });
+        }
 
         // Build filter list
         function buildFilterList() {
